@@ -1,5 +1,4 @@
 // passport.js
-
 import passport from "passport";
 import GoogleStrategy from "passport-google-oauth20";
 import FacebookStrategy from "passport-facebook";
@@ -22,14 +21,33 @@ passport.deserializeUser((id, done) => {
 passport.use(
   new GoogleStrategy.Strategy(
     {
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      clientID:
+        "618877533476-788ma9nfau13uqhun74hlf3borotk660.apps.googleusercontent.com",
+      clientSecret: "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",
       callbackURL: process.env.GOOGLE_CALLBACK_URL,
     },
-    (accessToken, refreshToken, profile, done) => {
-      // Handle Google authentication
-      // You can save the user to the database or perform other actions
-      return done(null, profile);
+    async (accessToken, refreshToken, profile, done) => {
+      try {
+        // Check if the user already exists in the database
+        let user = await User.findOne({ googleId: profile.id });
+
+        if (!user) {
+          // If the user doesn't exist, create a new user
+          user = new User({
+            googleId: profile.id,
+            email: profile.emails[0].value,
+            displayName: profile.displayName,
+            // Add other profile information as needed
+          });
+          await user.save();
+        }
+
+        // Pass the user object to Passport
+        return done(null, { ...profile._json, scopes: accessToken.scope });
+      } catch (err) {
+        console.error(err);
+        return done(err, null);
+      }
     }
   )
 );
@@ -40,36 +58,31 @@ passport.use(
     {
       clientID: "1176444809982061",
       clientSecret: "fb76085186b82436043ebe7a52266856",
-      callbackURL: "/auth/facebook/callback",
+      callbackURL: process.env.FACEBOOK_CALLBACK_URL,
       profileFields: ["id", "displayName", "email", "picture"], // Adjust fields as needed
     },
-    (accessToken, refreshToken, profile, done) => {
-      // Connect to your database and perform actions (e.g., find or create user)
-      MongoClient.connect(
-        process.env.MONGODB_URL,
-        { useNewUrlParser: true, useUnifiedTopology: true },
-        (err, client) => {
-          if (err) throw err;
+    async (accessToken, refreshToken, profile, done) => {
+      try {
+        // Check if the user already exists in the database
+        let user = await User.findOne({ facebookId: profile.id });
 
-          const db = client.db("Raddaf");
-
-          // Find or create user
-          db.collection("users").findOneAndUpdate(
-            { id: profile.id },
-            {
-              $setOnInsert: {
-                /* Fields to set when creating a new user */
-              },
-            },
-            { upsert: true, returnDocument: "after" }, // Create a new user if not found
-            (err, user) => {
-              if (err) throw err;
-              client.close();
-              return done(null, user.value); // Pass the user object to Passport
-            }
-          );
+        if (!user) {
+          // If the user doesn't exist, create a new user
+          user = new User({
+            facebookId: profile.id,
+            email: profile.emails[0].value,
+            displayName: profile.displayName,
+            // Add other profile information as needed
+          });
+          await user.save();
         }
-      );
+
+        // Pass the user object to Passport
+        return done(null, { ...profile._json, scopes: accessToken.scope });
+      } catch (err) {
+        console.error(err);
+        return done(err, null);
+      }
     }
   )
 );

@@ -122,8 +122,11 @@ export const googleAuthCallback = (req, res) => {
       return res.status(401).json({ error: "Google authentication failed." });
     }
 
-    // If authentication is successful, you can customize the success message
-    res.status(200).json({ message: "Google authentication successful." });
+    // If authentication is successful, pass the user and profile info to the client
+    res.status(200).json({
+      message: "Google authentication successful.",
+      user: { ...user, password: undefined },
+    });
   })(req, res);
 };
 
@@ -136,7 +139,10 @@ export const facebookAuthCallback = (req, res) => {
       return res.status(401).json({ error: "Facebook authentication failed." });
     }
 
-    // If authentication is successful, you can customize the success message
-    res.status(200).json({ message: "Facebook authentication successful." });
+    // If authentication is successful, pass the user and profile info to the client
+    res.status(200).json({
+      message: "Facebook authentication successful.",
+      user: { ...user, password: undefined },
+    });
   })(req, res);
 };
