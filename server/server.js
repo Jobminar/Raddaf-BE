@@ -14,6 +14,14 @@ import session from "express-session";
 // Load environment variables early
 dotenv.config();
 
+// Check for MongoDB URL
+if (!process.env.MONGODB_URL) {
+  console.error(
+    "MongoDB URL is not defined. Check your environment variables."
+  );
+  process.exit(1);
+}
+
 // Create the Express app
 const app = express();
 
@@ -61,7 +69,10 @@ app.use("/auth", authRoutes);
 // Connect to MongoDB efficiently changed url to string
 async function connectToMongo() {
   try {
-    await mongoose.connect(process.env.MONGODB_URL);
+    await mongoose.connect(process.env.MONGODB_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     console.log("Connected to MongoDB");
   } catch (err) {
     console.error("MongoDB connection error:", err);
