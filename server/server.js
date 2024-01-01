@@ -58,14 +58,18 @@ passport.session();
 
 app.use("/auth", authRoutes);
 
-// Connect to MongoDB efficiently
-mongoose
-  .connect(process.env.MONGODB_URL)
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => {
+// Connect to MongoDB efficiently changed url to string
+async function connectToMongo() {
+  try {
+    await mongoose.connect(process.env.MONGODB_URL);
+    console.log("Connected to MongoDB");
+  } catch (err) {
     console.error("MongoDB connection error:", err);
     process.exit(1);
-  });
+  }
+}
+
+connectToMongo();
 
 // Start the server
 const PORT = process.env.PORT || 3000;
