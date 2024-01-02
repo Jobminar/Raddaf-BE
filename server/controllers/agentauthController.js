@@ -17,6 +17,7 @@ const generateToken = (agentId) => {
 export const signUpAgent = async (req, res) => {
   try {
     const {
+      profileImage,
       Username,
       email,
       password,
@@ -45,6 +46,7 @@ export const signUpAgent = async (req, res) => {
     const saltRounds = 10;
     const hashedPassword = await bcryptjs.hash(password, saltRounds);
     const newAgent = new Agent({
+      profileImage,
       Username,
       email,
       password: hashedPassword,
@@ -66,13 +68,79 @@ export const signUpAgent = async (req, res) => {
 };
 
 // Other agent authentication controllers here...
+// agentAuthController.js
+
+export const loginAgent = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Check if the agent exists in the database
+    const agent = await Agent.findOne({ email });
+
+    if (!agent) {
+      return res.status(401).json({ error: "Invalid credentials" });
+    }
+
+    // Check if the provided password is correct
+    const isPasswordValid = await bcryptjs.compare(password, agent.password);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({ error: "Invalid credentials" });
+    }
+
+    // Check if the agent is verified
+    if (!agent.verified) {
+      return res.status(401).json({ error: "Agent not verified" });
+    }
+
+    // If all checks pass, generate a token and send success response
+    const token = generateToken(agent._id);
+    res.status(200).json({ token, message: "Login successful" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 
 export const checkSession = async (req, res) => {
-  // Same as the checkSession function in authController.js
-  // Adjust as needed for agent-specific logic
+  const token = req.headers.authorization?.split(" ")[1];
+
+  if (!token) {
+    return res.status(401).json({ error: "No token provided" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log("Decoded Token:", decoded);
+
+    // Continue with session check
+    const agentId = decoded.agentId;
+
+    // Check if the user exists in the database
+    const agent = await Agent.findById(agentId);
+
+    if (agent) {
+      // User exists, session is still valid
+      return res.status(200).json({ message: "Session is still valid." });
+    } else {
+      // User not found, session is invalid
+      return res.status(401).json({ error: "Invalid session" });
+    }
+  } catch (error) {
+    console.error("Error decoding token:", error);
+    return res.status(401).json({ error: "Invalid token" });
+  }
 };
 
 export const logout = (req, res) => {
-  // Same as the logout function in authController.js
-  // Adjust as needed for agent-specific logic
+  req.logout();
+
+  // Clear the session and any associated session tokens
+  req.session.destroy((err) => {
+    if (err) {
+      console.error("Error destroying session:", err);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+    res.status(200).json({ message: "Logout successful." });
+  });
 };
