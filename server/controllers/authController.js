@@ -12,25 +12,37 @@ const generateToken = (userId) => {
   const token = jwt.sign({ userId }, secret, { expiresIn });
   return token;
 };
+// Modify your user schema to include the new fields
+
+// Modify your signup function to get the new fields from the request body
 export const signUp = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { Username, email, password, Fullname, title, language } = req.body;
 
-    // Check if the email already exists in any authentication provider
+    // Check if the email or username already exists in any authentication provider
     const existingUser = await User.findOne({
-      $or: [{ email }, { googleId: email }, { facebookId: email }],
+      $or: [
+        { email },
+        { Username },
+        { googleId: email },
+        { facebookId: email },
+      ],
     });
 
     if (existingUser) {
-      return res.status(409).json({ error: "Email already taken" });
+      return res.status(409).json({ error: "Email or username already taken" });
     }
 
     // Continue with local signup (email/password)
     const saltRounds = 10;
     const hashedPassword = await bcryptjs.hash(password, saltRounds);
     const newUser = new User({
+      Username,
       email,
       password: hashedPassword,
+      Fullname,
+      title,
+      language,
     });
 
     await newUser.save();
