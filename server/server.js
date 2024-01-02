@@ -9,7 +9,9 @@ import { urlencoded } from "express";
 import passport from "passport";
 import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes.js";
+import agentAuthRoutes from "./routes/agentauthRoutes.js";
 import session from "express-session";
+import Agent from "./models/Agent.js";
 
 // Load environment variables early
 dotenv.config();
@@ -61,10 +63,38 @@ app.use(
     saveUninitialized: false,
   })
 );
+
+// Initialize passport for both users and agents
 passport.initialize();
 passport.session();
 
+// Passport serialization and deserialization for users
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+  User.findById(id, (err, user) => {
+    done(err, user);
+  });
+});
+
+// Passport serialization and deserialization for agents
+passport.serializeUser((agent, done) => {
+  done(null, agent.id);
+});
+
+passport.deserializeUser((id, done) => {
+  Agent.findById(id, (err, agent) => {
+    done(err, agent);
+  });
+});
+
+// Use authentication routes for users
 app.use("/auth", authRoutes);
+
+// Use authentication routes for agents
+app.use("/agent-auth", agentAuthRoutes);
 
 // Connect to MongoDB efficiently changed url to string
 async function connectToMongo() {
