@@ -13,7 +13,7 @@ const generateToken = (agentId) => {
   const token = jwt.sign({ agentId }, secret, { expiresIn });
   return token;
 };
-
+//signup controller and logic for agent_________________________________
 export const signUpAgent = async (req, res) => {
   try {
     const {
@@ -66,10 +66,7 @@ export const signUpAgent = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
-// Other agent authentication controllers here...
-// agentAuthController.js
-
+//login agent controller
 export const loginAgent = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -93,9 +90,21 @@ export const loginAgent = async (req, res) => {
       return res.status(401).json({ error: "Agent not verified" });
     }
 
-    // If all checks pass, generate a token and send success response
+    // If all checks pass, generate a token and send success response with user data
     const token = generateToken(agent._id);
-    res.status(200).json({ token, message: "Login successful" });
+    const userData = {
+      profileImage: agent.profileImage
+        ? agent.profileImage.toString("base64")
+        : null,
+      Username: agent.Username,
+      email: agent.email,
+      Fullname: agent.Fullname,
+      title: agent.title,
+      language: agent.language,
+      verified: agent.verified,
+      agentId: agent.agentId,
+    };
+    res.status(200).json({ token, userData, message: "Login successful" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });

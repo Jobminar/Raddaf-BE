@@ -17,7 +17,7 @@ const generateToken = (userId) => {
 // Modify your signup function to get the new fields from the request body
 export const signUp = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { profileImage, Username, email, password, title } = req.body;
 
     // Check if the email already exists in any authentication provider field
     const existingUser = await User.findOne({
@@ -30,12 +30,21 @@ export const signUp = async (req, res) => {
       });
     }
 
+    // Convert base64 image to Buffer
+    let imageBuffer;
+    if (profileImage && profileImage.startsWith("data:image")) {
+      imageBuffer = Buffer.from(profileImage.split(",")[1], "base64");
+    }
     // Continue with local signup (email/password)
     const saltRounds = 10;
     const hashedPassword = await bcryptjs.hash(password, saltRounds);
     const newUser = new User({
+      profileImage,
+      Username,
       email,
       password: hashedPassword,
+      title,
+      fullname,
     });
 
     await newUser.save();
@@ -61,7 +70,14 @@ export const login = async (req, res) => {
       // Send the token to the client along with other user data
       res.status(200).json({
         message: "Login successful.",
-        user: { id: user._id, email: user.email },
+        user: {
+          id: user._id,
+          profileImage: user.profileImage,
+          email: user.email,
+          Username: user.username,
+          title: user.title,
+          fullname: user.fullname,
+        },
         token,
       });
     } else {
