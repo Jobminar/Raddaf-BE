@@ -9,8 +9,4 @@ router.post("/signup", agentAuthController.signUpAgent);
 
 router.post("/login", agentAuthController.loginAgent);
 
-router.get("/logout", agentAuthController.logout);
-
-router.get("/check-session", verifyToken, agentAuthController.checkSession);
-
 export default router;

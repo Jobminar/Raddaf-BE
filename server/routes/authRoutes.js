@@ -13,10 +13,4 @@ router.get("/logout", authController.logout);
 
 router.get("/check-session", verifyToken, checkSession);
 
-// Google authentication
-router.get("/google/callback", authController.googleAuthCallback);
-
-// Facebook authentication
-router.get("/facebook/callback", authController.facebookAuthCallback);
-
 export default router;
