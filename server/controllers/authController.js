@@ -31,16 +31,23 @@ export const signUp = async (req, res) => {
       });
     }
 
+    // Ensure that password is provided
+    if (!password) {
+      return res.status(400).json({
+        error: "Password is required",
+      });
+    }
+
     // Convert base64 image to Buffer
     let imageBuffer;
     if (profileImage && profileImage.startsWith("data:image")) {
       imageBuffer = Buffer.from(profileImage.split(",")[1], "base64");
     }
 
-    // Hash password with Argon2
-    const hashedPassword = await argon2.hash(password); // Using default parameters
+    // Continue with local signup (email/password)
+    const saltRounds = 10;
+    const hashedPassword = await bcryptjs.hash(password, saltRounds);
 
-    // Create new user
     const newUser = new User({
       profileImage,
       Username,
@@ -52,6 +59,7 @@ export const signUp = async (req, res) => {
 
     await newUser.save();
 
+    // Provide success message
     res.status(200).json({ message: "Signup successful. Please log in." });
   } catch (error) {
     console.error(error);
