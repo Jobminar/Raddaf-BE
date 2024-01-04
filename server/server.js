@@ -88,7 +88,7 @@ app.use("/auth", authRoutes);
 app.use("/", instantevalRoutes);
 // Use authentication routes for agents
 app.use("/agent-auth", agentAuthRoutes);
-
+app.use("/listing-property", listingPropertyRoutes);
 // Connect to MongoDB efficiently changed url to string
 async function connectToMongo() {
   try {
