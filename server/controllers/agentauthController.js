@@ -1,6 +1,6 @@
 // agentAuthController.js
 import passport from "passport";
-import bcryptjs from "bcryptjs";
+import argon2 from "argon2";
 import Agent from "../models/Agent.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
@@ -28,7 +28,7 @@ export const signUpAgent = async (req, res) => {
       agentId,
     } = req.body;
 
-    // Check if the email or username already exists in any authentication provider
+    // Check for existing email or username
     const existingAgent = await Agent.findOne({
       $or: [
         { email },
@@ -42,9 +42,10 @@ export const signUpAgent = async (req, res) => {
       return res.status(409).json({ error: "Email or username already taken" });
     }
 
-    // Continue with local signup (email/password)
-    const saltRounds = 10;
-    const hashedPassword = await bcryptjs.hash(password, saltRounds);
+    // Hash password with Argon2
+    const hashedPassword = await argon2.hash(password); // Using default parameters
+
+    // Create new agent
     const newAgent = new Agent({
       profileImage,
       Username,
@@ -59,7 +60,6 @@ export const signUpAgent = async (req, res) => {
 
     await newAgent.save();
 
-    // Provide success message
     res.status(200).json({ message: "Signup successful. Please log in." });
   } catch (error) {
     console.error(error);
