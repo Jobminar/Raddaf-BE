@@ -11,6 +11,7 @@ import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes.js";
 import agentAuthRoutes from "./routes/agentauthRoutes.js";
 import instantevalRoutes from "./routes/instantevalRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js"
 import session from "express-session";
 import Agent from "./models/Agent.js";
 
@@ -87,8 +88,11 @@ passport.deserializeUser((id, done) => {
 app.use("/auth", authRoutes);
 app.use("/", instantevalRoutes);
 // Use authentication routes for agents
+app.use("/admin", adminRoutes);
 app.use("/agent-auth", agentAuthRoutes);
-app.use("/listing-property", listingPropertyRoutes);
+//app.use("/listing-property", listingPropertyRoutes);
+
+
 // Connect to MongoDB efficiently changed url to string
 async function connectToMongo() {
   try {
