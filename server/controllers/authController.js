@@ -17,7 +17,8 @@ const generateToken = (userId) => {
 // Modify your signup function to get the new fields from the request body
 export const signUp = async (req, res) => {
   try {
-    const { profileImage, Username, email, password, title } = req.body;
+    const { profileImage, Username, email, password, title, fullname } =
+      req.body;
 
     // Check if the email already exists in any authentication provider field
     const existingUser = await User.findOne({
