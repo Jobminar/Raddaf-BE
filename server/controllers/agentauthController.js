@@ -115,9 +115,9 @@ export const loginAgent = async (req, res) => {
       profileImage: agent.profileImage
         ? agent.profileImage.toString("base64")
         : null,
-      Username: agent.Username,
+      Username: agent.username,
       email: agent.email,
-      Fullname: agent.Fullname,
+      Fullname: agent.fullname,
       title: agent.title,
       language: agent.language,
       verified: agent.verified,
