@@ -7,7 +7,7 @@ import {
 } from "../controllers/instantevalController";
 
 // Get all instantevals
-router.get("/instantevals", getAllInstantEvals);
+router.get("/instantevals/:userId", getAllInstantEvals);
 
 // Post a new instanteval
 router.post("/instantevals", postInstantEval);

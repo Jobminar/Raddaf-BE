@@ -5,11 +5,20 @@ import InstantEval, { find } from "../models/instanteval";
 // Get all instantevals
 export async function getAllInstantEvals(req, res) {
   try {
-    // Fetch all InstantEvals from the database
-    const instantEvals = await find();
+    // Extract userId from the request parameters or query string
+    const userId = req.params.userId || req.query.userId;
 
-    // Respond with the retrieved InstantEvals
-    res.json(instantEvals);
+    // If userId is not provided, fetch all InstantEvals from the database
+    if (!userId) {
+      const instantEvals = await find();
+      return res.json(instantEvals);
+    }
+
+    // If userId is provided, fetch only the InstantEvals associated with that userId
+    const userInstantEvals = await InstantEval.find({ userId });
+
+    // Respond with the retrieved InstantEvals for the specific user
+    res.json(userInstantEvals);
   } catch (error) {
     // Handle errors and respond with a 500 Internal Server Error
     console.error(error);
