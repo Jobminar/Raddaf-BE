@@ -10,6 +10,7 @@ import passport from "passport";
 import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes.js";
 import agentAuthRoutes from "./routes/agentauthRoutes.js";
+import instantevalRoutes from "./routes/instantevalRoutes.js";
 import session from "express-session";
 import Agent from "./models/Agent.js";
 
@@ -56,14 +57,6 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(
-  session({
-    secret: "your_session_secret",
-    resave: false,
-    saveUninitialized: false,
-  })
-);
-
 // Initialize passport for both users and agents
 passport.initialize();
 passport.session();
@@ -92,17 +85,14 @@ passport.deserializeUser((id, done) => {
 
 // Use authentication routes for users
 app.use("/auth", authRoutes);
-
+app.use("/", instantevalRoutes);
 // Use authentication routes for agents
 app.use("/agent-auth", agentAuthRoutes);
 
 // Connect to MongoDB efficiently changed url to string
 async function connectToMongo() {
   try {
-    await mongoose.connect(process.env.MONGODB_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(process.env.MONGODB_URL, {});
     console.log("Connected to MongoDB");
   } catch (err) {
     console.error("MongoDB connection error:", err);

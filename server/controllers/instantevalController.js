@@ -1,16 +1,14 @@
 // controllers/instantevalController.js
+import InstantEval from "../models/instanteval.js";
 
-import InstantEval, { find } from "../models/instanteval";
-
-// Get all instantevals
 export async function getAllInstantEvals(req, res) {
   try {
-    // Extract userId from the request parameters or query string
-    const userId = req.params.userId || req.query.userId;
+    // Extract userId from the request body
+    const { userId } = req.body;
 
     // If userId is not provided, fetch all InstantEvals from the database
     if (!userId) {
-      const instantEvals = await find();
+      const instantEvals = await InstantEval.findInstantEvals();
       return res.json(instantEvals);
     }
 
@@ -26,10 +24,9 @@ export async function getAllInstantEvals(req, res) {
   }
 }
 
-// Post a new instanteval
 export async function postInstantEval(req, res) {
   try {
-    // Destructure the relevant fields from the request body
+    // Destructure the relevant fields from the request body, including userId
     const {
       userId,
       username,

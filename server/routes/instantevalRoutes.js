@@ -1,15 +1,16 @@
 // routes/instantevalRoutes.js
-import { Router } from "express";
-const router = Router();
+import express from "express";
 import {
   getAllInstantEvals,
   postInstantEval,
-} from "../controllers/instantevalController";
+} from "../controllers/instantevalController.js";
 
-// Get all instantevals
-router.get("/instantevals/:userId", getAllInstantEvals);
+const router = express.Router();
 
-// Post a new instanteval
+// Route to get all InstantEvals (you can change the method to POST if needed)
+router.get("/instantevals", getAllInstantEvals);
+
+// Route to post a new InstantEval
 router.post("/instantevals", postInstantEval);
 
 export default router;

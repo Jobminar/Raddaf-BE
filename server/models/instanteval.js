@@ -12,21 +12,24 @@ const instantEvalSchema = new Schema({
   address: { type: String, required: true },
   propertyAction: {
     type: String,
-    enum: ["SELL", "LET", "CURIOUS", "REMORTGAGING"],
     required: true,
   },
   timing: {
     type: String,
-    enum: ["0-3 MONTHS", "3-6 MONTHS", "6+ MONTHS"],
     required: true,
   },
-  additionalMessage: { type: String },
-  bestWayToContact: { type: String, enum: ["EMAIL", "PHONE", "EITHER"] },
+  additionalMessage: { type: String, required: true },
+  bestWayToContact: { type: String, required: true },
   bestTimeToContact: {
     type: String,
-    enum: ["MORNING", "AFTERNOON", "EVENING", "ANYTIME"],
+    required: true,
   },
 });
+
+// Custom find function
+instantEvalSchema.statics.findInstantEvals = function (query = {}) {
+  return this.find(query);
+};
 
 const InstantEval = model("InstantEval", instantEvalSchema);
 
