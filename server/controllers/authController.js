@@ -4,7 +4,7 @@ import User from "../models/User.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
-
+//changes done in bcryptjs
 const generateToken = (userId) => {
   const secret = process.env.JWT_SECRET;
   const expiresIn = "1h"; // Set the expiration time for the token
