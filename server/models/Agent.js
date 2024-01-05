@@ -13,13 +13,12 @@ const agentSchema = new Schema({
   password: { type: String, required: true },
   fullname: String,
   title: String,
-  language: String,
   googleId: { type: String, unique: true, required: false },
   facebookId: { type: String, unique: true, required: false },
   verified: { type: Boolean, default: false },
-  zoneNumber : { type: String,  required: false },
+  zoneNumber: { type: String, required: false },
   agentId: String,
-  approvedOn: { type: Date, required: false , default: null}
+  approvedOn: { type: Date, required: false, default: null },
 });
 
 export default mongoose.model("Agent", agentSchema);

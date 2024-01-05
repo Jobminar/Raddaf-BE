@@ -29,7 +29,6 @@ export const signUpAgent = [
         password,
         Fullname,
         title,
-        language,
         verified,
         agentId,
       } = req.body;
@@ -71,7 +70,6 @@ export const signUpAgent = [
         password: hashedPassword,
         Fullname,
         title,
-        language,
         verified,
         agentId,
       });
@@ -119,7 +117,6 @@ export const loginAgent = async (req, res) => {
       email: agent.email,
       Fullname: agent.fullname,
       title: agent.title,
-      language: agent.language,
       verified: agent.verified,
       agentId: agent.agentId,
     };
