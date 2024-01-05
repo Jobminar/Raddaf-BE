@@ -13,20 +13,23 @@ const listingPropertySchema = new Schema({
   },
   images: [{ type: String, match: /\.(png|jpg)$/ }],
   propertyDocuments: [
-    { title: String, files: [{ type: String, match: /\.(docx|csv|xlsx)$/ }] },
+    {
+      title: String,
+      files: [{ type: String, match: /\.(docx|csv|xlsx|pdf)$/ }],
+    },
     // Add more document types as needed
   ],
   fittingAndContentsForm: String,
   energyPerformanceCertificate: String,
   leaseholdInformation: [
-    { type: String, match: /\.(docx|csv|xlsx)$/ },
+    { type: String, match: /\.(docx|csv|xlsx|pdf)$/ },
     // Add more document types as needed
   ],
   propertyInfoForm: String,
   localAuthoritySearch: String,
   floorplan: String,
   propertyValuationReport: [
-    { type: String, match: /\.(docx|csv|xlsx)$/ },
+    { type: String, match: /\.(docx|csv|xlsx|pdf)$/ },
     // Add more document types as needed
   ],
   propertyDescription: String,

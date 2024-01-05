@@ -13,18 +13,18 @@ export const validateListingProperty = [
   body("propertyDocuments.*.title").isString(),
   body("propertyDocuments.*.files.*")
     .isString()
-    .matches(/\.(docx|csv|xlsx)$/),
+    .matches(/\.(docx|csv|xlsx|pdf)$/),
   body("fittingAndContentsForm").isString(),
   body("energyPerformanceCertificate").isString(),
   body("leaseholdInformation.*")
     .isString()
-    .matches(/\.(docx|csv|xlsx)$/),
+    .matches(/\.(docx|csv|xlsx|pdf)$/),
   body("propertyInfoForm").isString(),
   body("localAuthoritySearch").isString(),
   body("floorplan").isString(),
   body("propertyValuationReport.*")
     .isString()
-    .matches(/\.(docx|csv|xlsx)$/),
+    .matches(/\.(docx|csv|xlsx|pdf)$/),
   body("propertyDescription").isString(),
   body("noOfBedrooms").isInt({ min: 0 }),
   body("noOfBathrooms").isInt({ min: 0 }),
