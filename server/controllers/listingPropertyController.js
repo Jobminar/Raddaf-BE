@@ -1,6 +1,7 @@
 import ListingProperty from "../models/listingPropertySchema.js";
 import { parseExcel } from "./excelParser.js";
 import { parsePdf } from "./pdfParser.js";
+import { validationResult } from "express-validator";
 
 export const createListingProperty = async (req, res) => {
   try {
