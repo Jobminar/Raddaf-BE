@@ -10,7 +10,7 @@ export const createListingProperty = async (req, res) => {
     }
 
     const {
-      userId,
+      email,
       username,
       purpose,
       propertyType,
@@ -60,7 +60,7 @@ export const createListingProperty = async (req, res) => {
 
     // Create a new property listing with the uploaded file details
     const newListingProperty = new ListingProperty({
-      userId,
+      email,
       username,
       purpose,
       propertyType,
@@ -113,9 +113,9 @@ export const getListings = async (req, res) => {
 // Controller for getting a listing property by user email
 export const getListingByUserEmail = async (req, res) => {
   try {
-    const { userEmail } = req.body;
+    const { email } = req.body;
 
-    if (!userEmail) {
+    if (!email) {
       return res
         .status(400)
         .json({ error: "User email is required in the request body" });
@@ -123,7 +123,7 @@ export const getListingByUserEmail = async (req, res) => {
 
     // Fetch the listing properties for the given user email
     const listings = await ListingProperty.find({
-      "contactDetails.email": userEmail,
+      "contactDetails.email": email,
     });
 
     // Respond with the listing properties

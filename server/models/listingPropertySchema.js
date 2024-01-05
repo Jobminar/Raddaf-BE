@@ -4,12 +4,11 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const listingPropertySchema = new Schema({
-  userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+  email: { type: String, required: true },
   username: { type: String, required: true },
   purpose: { type: String, enum: ["Sale", "Tolet"], required: true },
   propertyType: {
-    type: String,
-    enum: ["Commercial", "Residential"],
+    type: [String],
     required: true,
   },
   images: [{ type: String, match: /\.(png|jpg)$/ }],
