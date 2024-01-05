@@ -19,7 +19,8 @@ export const signUp = [
   upload.single("profileImage"),
   async (req, res) => {
     try {
-      const { Username, email, password, title, fullname } = req.body;
+      const { profileImage, Username, email, password, title, fullname } =
+        req.body;
 
       // Check if the email already exists in any authentication provider field
       const existingUser = await User.findOne({ email });
