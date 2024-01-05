@@ -16,7 +16,7 @@ const agentSchema = new Schema({
   googleId: { type: String, unique: true, required: false },
   facebookId: { type: String, unique: true, required: false },
   verified: { type: Boolean, default: false },
-  zoneNumber: { type: String, required: false },
+  zoneNumber: { type: String, required: true },
   agentId: String,
   approvedOn: { type: Date, required: false, default: null },
 });

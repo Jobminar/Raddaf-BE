@@ -30,6 +30,7 @@ export const signUpAgent = [
         Fullname,
         title,
         verified,
+        zoneNumber,
         agentId,
       } = req.body;
 
@@ -71,6 +72,7 @@ export const signUpAgent = [
         Fullname,
         title,
         verified,
+        zoneNumber,
         agentId,
       });
 
@@ -118,6 +120,7 @@ export const loginAgent = async (req, res) => {
       Fullname: agent.fullname,
       title: agent.title,
       verified: agent.verified,
+      zoneNumber: agent.zoneNumber,
       agentId: agent.agentId,
     };
     res.status(200).json({ token, userData, message: "Login successful" });
