@@ -7,7 +7,7 @@ const agentSchema = new Schema({
     type: String,
     required: false,
   },
-  Username: { type: String, unique: true, required: true },
+  Username: { type: String, unique: false, required: true },
   email: { type: String, unique: true, required: true },
   password: { type: String, required: true },
   fullname: String,
