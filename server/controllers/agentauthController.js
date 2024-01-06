@@ -35,12 +35,7 @@ export const signUpAgent = [
 
       // Check for existing email or username
       const existingAgent = await Agent.findOne({
-        $or: [
-          { email },
-          { Username },
-          { googleId: email },
-          { facebookId: email },
-        ],
+        $or: [{ email }],
       });
 
       if (existingAgent) {
