@@ -1,19 +1,35 @@
 // routes.js
 import express from "express";
 import * as listingPropertyController from "../controllers/listingPropertyController.js";
+import {createListingProperty} from "../controllers/createPropertyController.js"
 import {
   validateListingProperty,
   validateGetListingByUserEmail,
   validateGetListingByAddress,
 } from "../middleware/listingValidationMiddleware.js";
+import multer from 'multer';
+
+const upload = multer({ storage: multer.memoryStorage() });
+
 
 const router = express.Router();
 
 // Route for creating a new property listing
 router.post(
   "/create",
-  validateListingProperty,
-  listingPropertyController.createListingProperty
+ // validateListingProperty,
+ upload.fields([
+  { name: 'images', maxCount: 7 },
+  { name: 'propertyTitleDeals', maxCount: 1 },
+  { name: 'fittingContentForm', maxCount: 1 },
+  { name: 'propertyInfoForm', maxCount: 1 },
+  { name: 'energyPerformanceCertificate', maxCount: 1 },
+  { name: 'leaseHoldInformation', maxCount: 1 },
+  { name: 'localAuthoritySearch', maxCount: 1 },
+  { name: 'propertyValuationReport', maxCount: 1 },
+  { name: 'floorPlan', maxCount: 1 },
+ ]),
+ createListingProperty
 );
 
 // Route for getting all listing properties
