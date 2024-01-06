@@ -31,7 +31,6 @@ export const signUpAgent = [
         title,
         verified,
         zoneNumber,
-        agentId,
       } = req.body;
 
       // Check for existing email or username
@@ -73,7 +72,6 @@ export const signUpAgent = [
         title,
         verified,
         zoneNumber,
-        agentId,
       });
 
       await newAgent.save();
