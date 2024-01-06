@@ -4,14 +4,22 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const listingPropertySchema = new Schema({
-  email: { type: String, required: true },
-  username: { type: String, required: true },
-  purpose: { type: String, enum: ["Sale", "Tolet"], required: true },
+  purpose: { type: String, required: false },
   propertyType: {
     type: [String],
     required: true,
   },
-  images: [{ type: String, match: /\.(png|jpg)$/ }],
+  images: [
+    {
+      type: String,
+      validate: {
+        validator: function (value) {
+          return /\.(png|jpg)$/.test(value) || /^https?:\/\/\S+$/.test(value);
+        },
+        message: "Invalid image format or URL",
+      },
+    },
+  ],
   propertyDocuments: [
     {
       title: String,
@@ -46,8 +54,10 @@ const listingPropertySchema = new Schema({
   noOfToilets: Number,
   parkingCapacity: Number,
   contactDetails: {
+    Fullname: String,
     email: String,
     phoneNumber: String,
+    Subject: String,
   },
   specialConditions: String,
   nearby: {
