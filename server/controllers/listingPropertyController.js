@@ -4,9 +4,92 @@ import { parsePdf } from "./pdfParser.js";
 import { validationResult } from "express-validator";
 
 
+<<<<<<< HEAD
+=======
+    const {
+      email,
+      username,
+      purpose,
+      propertyType,
+      images,
+      propertyDocuments,
+      fittingAndContentsForm,
+      energyPerformanceCertificate,
+      leaseholdInformation,
+      propertyInfoForm,
+      localAuthoritySearch,
+      floorplan,
+      propertyValuationReport,
+      propertyDescription,
+      receptionlength,
+      receptionwidth,
+      kitchenlength,
+      kitchenwidth,
+      masterBedroomlength,
+      masterBedroomwidth,
+      bedroomlength,
+      bedroomwidth,
+      noOfBedrooms,
+      noOfBathrooms,
+      noOfToilets,
+      parkingCapacity,
+      contactDetails,
+      specialConditions,
+      nearby,
+      scheduleDateTime,
+    } = req.body;
+>>>>>>> e338dc1afa98ebff75c192e8eb855da3b81e229d
 
 
 
+<<<<<<< HEAD
+=======
+    // Create a new property listing with the uploaded file details
+    const newListingProperty = new ListingProperty({
+      email,
+      username,
+      purpose,
+      propertyType,
+      images,
+      propertyDocuments,
+      fittingAndContentsForm,
+      energyPerformanceCertificate,
+      leaseholdInformation,
+      propertyInfoForm,
+      localAuthoritySearch,
+      floorplan,
+      propertyValuationReport,
+      propertyDescription,
+      receptionlength,
+      receptionwidth,
+      kitchenlength,
+      kitchenwidth,
+      masterBedroomlength,
+      masterBedroomwidth,
+      bedroomlength,
+      bedroomwidth,
+      noOfBedrooms,
+      noOfBathrooms,
+      noOfToilets,
+      parkingCapacity,
+      contactDetails,
+      specialConditions,
+      nearby,
+      scheduleDateTime,
+      files: parsedData,
+    });
+
+    // Save the new property listing to the database
+    const savedProperty = await newListingProperty.save();
+
+    // Respond with the saved property data
+    res.status(201).json(savedProperty);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+>>>>>>> e338dc1afa98ebff75c192e8eb855da3b81e229d
 
 // Controller for getting all listing properties
 export const getListings = async (req, res) => {

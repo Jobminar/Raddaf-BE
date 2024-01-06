@@ -31,17 +31,11 @@ export const signUpAgent = [
         title,
         verified,
         zoneNumber,
-        agentId,
       } = req.body;
 
       // Check for existing email or username
       const existingAgent = await Agent.findOne({
-        $or: [
-          { email },
-          { Username },
-          { googleId: email },
-          { facebookId: email },
-        ],
+        $or: [{ email }],
       });
 
       if (existingAgent) {
@@ -73,7 +67,6 @@ export const signUpAgent = [
         title,
         verified,
         zoneNumber,
-        agentId,
       });
 
       await newAgent.save();
