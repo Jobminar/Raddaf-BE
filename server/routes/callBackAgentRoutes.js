@@ -6,4 +6,6 @@ const router = express.Router();
 // Create a new callback agent
 router.post("/callback-agents", createCallbackAgent);
 
+router.get("/callback-agents", getAllCallbackAgents);
+
 export default router;

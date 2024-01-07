@@ -35,3 +35,16 @@ export const createCallbackAgent = async (req, res) => {
     res.status(500).json({ message: "Something went wrong", error });
   }
 };
+
+export const getAllCallbackAgents = async (req, res) => {
+  try {
+    // Use the find method of the CallbackAgent model to get all records
+    const callbackAgents = await CallbackAgent.find();
+
+    // Send the retrieved callback agents to the client
+    res.json({ callbackAgents });
+  } catch (error) {
+    // Handle any errors
+    res.status(500).json({ message: "Something went wrong", error });
+  }
+};
