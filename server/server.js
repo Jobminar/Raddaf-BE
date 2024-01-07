@@ -15,7 +15,7 @@ import listingPropertyRoutes from "./routes/ListingProperty.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import session from "express-session";
 import Agent from "./models/Agent.js";
-
+import callBackAgentRoutes from "./routes/callBackAgentRoutes.js";
 // Load environment variables early
 dotenv.config();
 
@@ -92,6 +92,7 @@ app.use("/", evalRequestRoutes);
 app.use("/admin", adminRoutes);
 app.use("/agent-auth", agentAuthRoutes);
 app.use("/listing-property", listingPropertyRoutes);
+app.use("/", callBackAgentRoutes);
 
 // Connect to MongoDB efficiently changed url to string
 async function connectToMongo() {
