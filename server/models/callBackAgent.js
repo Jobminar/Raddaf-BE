@@ -9,7 +9,6 @@ const callbackAgent = new Schema({
   contactMethod: {
     type: String,
     required: true,
-    enum: ["Valuation", "Letting information", "Other"],
   },
   other: { type: String },
   message: { type: String, required: true },
