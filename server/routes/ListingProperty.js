@@ -3,7 +3,6 @@ import express from "express";
 import * as listingPropertyController from "../controllers/listingPropertyController.js";
 import { createListingProperty } from "../controllers/createPropertyController.js";
 import {
-  validateListingProperty,
   validateGetListingByUserEmail,
   validateGetListingByAddress,
 } from "../middleware/listingValidationMiddleware.js";
@@ -16,7 +15,7 @@ const router = express.Router();
 // Route for creating a new property listing
 router.post(
   "/create",
-  validateListingProperty,
+
   upload.fields([
     { name: "images", maxCount: 7 },
     { name: "propertyTitleDeals", maxCount: 1 },
