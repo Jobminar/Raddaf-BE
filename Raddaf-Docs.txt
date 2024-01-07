@@ -1,0 +1,24 @@
+Finished functionalities in Backend
+
+userSignup:
+UserLogin:
+AdminSignup:
+AdminLogin:
+AgentSigup:
+AgentApprovalByClient:
+AgentLogin:
+Listing of properties:
+List of Agents:
+List of Properties by Sale and By Rent:
+List of Clients:
+Valuation Request:
+Email Service:(Not verified email)
+Pending: Chat Bot.
+
+https://docs.google.com/document/d/1rG5tdjcsTH04Pq5UmcM9Dwb_iSp9iWVwBHasiPo6Es4/edit?usp=sharing
+
+
+s3 iam user id : 767397765281
+iam username: Radaf-S3-IAM-User
+password:Jobminar@4923
+

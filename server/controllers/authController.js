@@ -15,12 +15,29 @@ const generateToken = (agentId) => {
 };
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
+
 export const signUp = [
   upload.single("profileImage"),
   async (req, res) => {
     try {
-      const { profileImage, Username, email, password, title, fullname } =
+      const { profileImage, username, email, password, title, fullname } =
         req.body;
+
+      // Check if the profileImage is missing
+      if (!profileImage) {
+        console.error("No profile image uploaded");
+        return res.status(400).json({
+          error: "Profile image is required",
+        });
+      }
+
+      // Check if the username is missing
+      if (!username) {
+        console.error("No username provided");
+        return res.status(400).json({
+          error: "Username is required",
+        });
+      }
 
       // Check if the email already exists in any authentication provider field
       const existingUser = await User.findOne({ email });
@@ -53,7 +70,7 @@ export const signUp = [
 
       const newUser = new User({
         profileImage: profileImageBuffer, // Use the converted Buffer or base64 string here
-        Username,
+        username,
         email,
         password: hashedPassword,
         title,
@@ -87,7 +104,7 @@ export const login = async (req, res) => {
         user: {
           id: user._id,
           profileImage: user.profileImage,
-          Username: user.username,
+          username: user.username,
           email: user.email,
           password: user.password,
           title: user.title,
