@@ -1,5 +1,6 @@
 import Admin from "../models/Admin.js";
 import Agent from "../models/Agent.js";
+import {sendEmail} from "../services/sendEmailService.js"
 
 export async function saveAdmin(req, res) {
     try {
@@ -86,20 +87,20 @@ export async function approveAgent(req,res){
         const { email , verrifiedStatus } = req.body
 
         //validation here
+        sendEmail()
 
-
-        const updateResult =  await Agent.updateOne({ email : email} , {
-            "$set": {
-                verified : verrifiedStatus,
-                approvedOn : new Date().toISOString()
-            } }, { new : true}
-        )
-        console.log("update result is" , updateResult);
-        if(updateResult){
-            res.status(200).json({ msg: "Verified Status Has Been Successfully Updated" });
-        }else{
-            res.status(400).json({ msg: "Unable to update the Agent" });
-        }
+        // const updateResult =  await Agent.updateOne({ email : email} , {
+        //     "$set": {
+        //         verified : verrifiedStatus,
+        //         approvedOn : new Date().toISOString()
+        //     } }, { new : true}
+        // )
+        // console.log("update result is" , updateResult);
+        // if(updateResult){
+        //     res.status(200).json({ msg: "Verified Status Has Been Successfully Updated" });
+        // }else{
+        //     res.status(400).json({ msg: "Unable to update the Agent" });
+        // }
 
 
     }catch(error){

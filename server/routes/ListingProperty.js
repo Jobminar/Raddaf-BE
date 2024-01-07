@@ -17,7 +17,7 @@ const router = express.Router();
 // Route for creating a new property listing
 router.post(
   "/create",
- // validateListingProperty,
+  validateListingProperty,
  upload.fields([
   { name: 'images', maxCount: 7 },
   { name: 'propertyTitleDeals', maxCount: 1 },
