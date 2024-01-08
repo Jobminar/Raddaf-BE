@@ -1,5 +1,8 @@
 import express from "express";
-import { createCallbackAgent } from "../controllers/callBackAgentController.js";
+import {
+  createCallbackAgent,
+  getAllCallbackAgents,
+} from "../controllers/callBackAgentController.js";
 
 const router = express.Router();
 
