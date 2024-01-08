@@ -164,15 +164,17 @@ export const logout = (req, res) => {
   });
 };
 //user profile update
+// authController.js
+
 export const updateProfile = async (req, res) => {
   try {
-    const userId = req.user._id; // Assuming you have a middleware to verify and attach the user to the request (e.g., verifyToken)
+    const userEmail = req.user.email; // Assuming you have a middleware to verify and attach the user to the request (e.g., verifyToken)
 
     const { profileImage, username, email, password, title, fullname } =
       req.body;
 
-    // Find the user by ID
-    const user = await User.findById(userId);
+    // Find the user by email
+    const user = await User.findOne({ email: userEmail });
 
     if (!user) {
       return res.status(404).json({ error: "User not found" });
@@ -181,7 +183,7 @@ export const updateProfile = async (req, res) => {
     // Update the user record with the new data
     user.profileImage = profileImage || user.profileImage;
     user.username = username || user.username;
-    user.email = email || user.email;
+    user.email = email || user.email; // Assuming you want to update the email as well
     user.password = password || user.password;
     user.title = title || user.title;
     user.fullname = fullname || user.fullname;
