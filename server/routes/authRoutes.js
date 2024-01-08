@@ -13,4 +13,6 @@ router.get("/logout", authController.logout);
 
 router.get("/check-session", verifyToken, checkSession);
 
+router.put("/update-profile", verifyToken, authController.updateProfile);
+
 export default router;
