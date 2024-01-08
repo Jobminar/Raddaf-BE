@@ -167,7 +167,6 @@ export const logout = (req, res) => {
 // authController.js
 
 // authController.js
-
 export const updateProfile = async (req, res) => {
   try {
     const userEmail = req.body.email; // Assuming you include the user's email in the request body
@@ -184,7 +183,13 @@ export const updateProfile = async (req, res) => {
     // Update the user record with the new data
     user.profileImage = profileImage || user.profileImage;
     user.username = username || user.username;
-    user.password = password || user.password;
+
+    // Hash the new password with Argon2 if provided
+    if (password) {
+      const hashedPassword = await argon2.hash(password);
+      user.password = hashedPassword;
+    }
+
     user.title = title || user.title;
     user.fullname = fullname || user.fullname;
 
