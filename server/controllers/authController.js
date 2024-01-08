@@ -168,7 +168,8 @@ export const updateProfile = async (req, res) => {
   try {
     const userId = req.user._id; // Assuming you have a middleware to verify and attach the user to the request (e.g., verifyToken)
 
-    const { title, fullname, language } = req.body;
+    const { profileImage, username, email, password, title, fullname } =
+      req.body;
 
     // Find the user by ID
     const user = await User.findById(userId);
@@ -178,9 +179,12 @@ export const updateProfile = async (req, res) => {
     }
 
     // Update the user record with the new data
+    user.profileImage = profileImage || user.profileImage;
+    user.username = username || user.username;
+    user.email = email || user.email;
+    user.password = password || user.password;
     user.title = title || user.title;
     user.fullname = fullname || user.fullname;
-    user.language = language || user.language;
 
     // Save the updated user record
     await user.save();
