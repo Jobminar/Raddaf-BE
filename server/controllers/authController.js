@@ -166,12 +166,13 @@ export const logout = (req, res) => {
 //user profile update
 // authController.js
 
+// authController.js
+
 export const updateProfile = async (req, res) => {
   try {
-    const userEmail = req.user.email; // Assuming you have a middleware to verify and attach the user to the request (e.g., verifyToken)
+    const userEmail = req.body.email; // Assuming you include the user's email in the request body
 
-    const { profileImage, username, email, password, title, fullname } =
-      req.body;
+    const { profileImage, username, password, title, fullname } = req.body;
 
     // Find the user by email
     const user = await User.findOne({ email: userEmail });
@@ -183,7 +184,6 @@ export const updateProfile = async (req, res) => {
     // Update the user record with the new data
     user.profileImage = profileImage || user.profileImage;
     user.username = username || user.username;
-    user.email = email || user.email; // Assuming you want to update the email as well
     user.password = password || user.password;
     user.title = title || user.title;
     user.fullname = fullname || user.fullname;
