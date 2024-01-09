@@ -12,7 +12,7 @@ export const getListings = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
+// Controller for getting all listing properties by email
 export const getListingByUserEmail = async (req, res) => {
   try {
     const { email } = req.body;
@@ -34,19 +34,46 @@ export const getListingByUserEmail = async (req, res) => {
   }
 };
 
-export const getListingByAddress = async (req, res) => {
+//getting properties by place
+import ListingProperty from "../models/listingPropertySchema.js";
+
+export const getPropertiesByPlace = async (req, res) => {
   try {
     const { place } = req.body;
 
-    if (!place) {
+    const properties = await ListingProperty.find({ place: place });
+
+    if (properties.length === 0) {
       return res
-        .status(400)
-        .json({ error: "place is required in the request body" });
+        .status(404)
+        .json({ msg: "No properties found for the given place." });
     }
 
-    const listings = await ListingProperty.find({ place });
+    res.status(200).json(properties);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 
-    res.status(200).json(listings);
+//getting properties by price
+import ListingProperty from "../models/listingPropertySchema.js";
+
+export const getPropertiesByPrice = async (req, res) => {
+  try {
+    const { minPrice, maxPrice } = req.body;
+
+    const properties = await ListingProperty.find({
+      price: { $gte: minPrice, $lte: maxPrice },
+    });
+
+    if (properties.length === 0) {
+      return res
+        .status(404)
+        .json({ msg: "No properties found within the specified price range." });
+    }
+
+    res.status(200).json(properties);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });

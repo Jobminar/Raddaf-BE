@@ -47,4 +47,15 @@ router.post(
   listingPropertyController.getListingByAddress
 );
 
+// Route for getting properties by place
+router.post(
+  "/get-properties/by-place",
+  getPropertyByPlaceController.getPropertiesByPlace
+);
+
+// Route for getting properties by price range
+router.post(
+  "/get-properties/by-price",
+  getPropertyByPriceController.getPropertiesByPrice
+);
 export default router;
