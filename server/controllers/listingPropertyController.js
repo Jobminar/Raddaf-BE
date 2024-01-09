@@ -36,15 +36,15 @@ export const getListingByUserEmail = async (req, res) => {
 
 export const getListingByAddress = async (req, res) => {
   try {
-    const { address } = req.body;
+    const { place } = req.body;
 
-    if (!address) {
+    if (!place) {
       return res
         .status(400)
-        .json({ error: "Address is required in the request body" });
+        .json({ error: "place is required in the request body" });
     }
 
-    const listings = await ListingProperty.find({ address });
+    const listings = await ListingProperty.find({ place });
 
     res.status(200).json(listings);
   } catch (error) {

@@ -292,6 +292,8 @@ export const createListingProperty = async (req, res) => {
       parkingCapacity,
       contactDetails,
       specialConditions,
+      price,
+      place,
       ScheduleDateTime,
     } = req.body;
 
@@ -305,6 +307,8 @@ export const createListingProperty = async (req, res) => {
       images: imageResult,
       deleteFlag: false,
       specialConditions: specialConditions,
+      place: req.body.place ? req.body.place : "United Kingdom",
+      price: req.body.price ? req.body.price : 0,
       propertyDimensions: {
         reception: {
           length: propertyDimensions?.reception?.rlength
@@ -364,7 +368,10 @@ export const createListingProperty = async (req, res) => {
       noOfToilets: Number(noOfToilets),
       parkingCapacity: Number(parkingCapacity),
       contactDetails: {
-        name: contactDetails && contactDetails.name ? contactDetails.name : "",
+        fullname:
+          contactDetails && contactDetails.fullname
+            ? contactDetails.fullname
+            : "",
         email:
           contactDetails && contactDetails.email ? contactDetails.email : "",
         phoneNumber:

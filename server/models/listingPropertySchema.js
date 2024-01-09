@@ -30,7 +30,7 @@ const listingPropertySchema = new Schema({
   noOfToilets: Number,
   parkingCapacity: Number,
   contactDetails: {
-    name: { type: String, required: false },
+    fullname: { type: String, required: false },
     email: { type: String, required: false },
     phoneNumber: { type: String, required: false },
     subject: { type: String, required: false },
@@ -44,6 +44,8 @@ const listingPropertySchema = new Schema({
   localAuthoritySearch: [{ Key: String, Value: String }],
   floorplan: [{ Key: String, Value: String }],
   propertyValuationReport: [{ Key: String, Value: String }],
+  price: { type: Number, default: 0 },
+  place: { type: String, default: "United Kingdom" },
   deleteFlag: { type: Boolean, default: false },
   scheduleDateTime: { type: Date },
   createdOn: { type: Date, default: Date.now() },
