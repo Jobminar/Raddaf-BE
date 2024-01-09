@@ -35,7 +35,6 @@ export const getListingByUserEmail = async (req, res) => {
 };
 
 //getting properties by place
-import ListingProperty from "../models/listingPropertySchema.js";
 
 export const getPropertiesByPlace = async (req, res) => {
   try {
@@ -57,7 +56,6 @@ export const getPropertiesByPlace = async (req, res) => {
 };
 
 //getting properties by price
-import ListingProperty from "../models/listingPropertySchema.js";
 
 export const getPropertiesByPrice = async (req, res) => {
   try {

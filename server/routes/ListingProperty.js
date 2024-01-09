@@ -41,21 +41,15 @@ router.post(
 );
 
 // Route for getting a listing property by address
-router.post(
-  "/get-listings/address",
-  validateGetListingByAddress,
-  listingPropertyController.getListingByAddress
-);
 
-// Route for getting properties by place
 router.post(
   "/get-properties/by-place",
-  getPropertyByPlaceController.getPropertiesByPlace
+  listingPropertyController.getPropertiesByPlace
 );
 
 // Route for getting properties by price range
 router.post(
   "/get-properties/by-price",
-  getPropertyByPriceController.getPropertiesByPrice
+  listingPropertyController.getPropertiesByPrice
 );
 export default router;
