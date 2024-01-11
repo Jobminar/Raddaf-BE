@@ -16,20 +16,20 @@ const listingPropertySchema = new Schema({
   propertyDescription: String,
   propertyDimensions: {
     reception: {
-      rlength: { type: Number, required: true },
-      Width: { type: Number, required: true },
+      length: { type: Number, required: true },
+      width: { type: Number, required: true },
     },
     kitchen: {
-      rlength: { type: Number, required: true },
-      Width: { type: Number, required: true },
+      length: { type: Number, required: true },
+      width: { type: Number, required: true },
     },
     masterBedroom: {
-      rlength: { type: Number, required: true },
-      Width: { type: Number, required: true },
+      length: { type: Number, required: true },
+      width: { type: Number, required: true },
     },
     bedroom: {
-      rlength: { type: Number, required: true },
-      Width: { type: Number, required: true },
+      length: { type: Number, required: true },
+      width: { type: Number, required: true },
     },
   },
 

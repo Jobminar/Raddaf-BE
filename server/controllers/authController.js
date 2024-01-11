@@ -4,17 +4,24 @@ import dotenv from "dotenv";
 import multer from "multer";
 import User from "../models/User.js";
 import pico from "pico";
+
 dotenv.config();
 
-const generateToken = (agentId) => {
+const generateToken = (userId) => {
   const secret = process.env.JWT_SECRET;
   const expiresIn = "1h"; // Set the expiration time for the token
 
-  const token = jwt.sign({ agentId }, secret, { expiresIn });
+  const token = jwt.sign({ userId }, secret, { expiresIn });
   return token;
 };
+
 const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 15 * 1024 * 1024, // 15MB limit
+  },
+});
 
 export const signUp = [
   upload.single("profileImage"),
@@ -60,11 +67,10 @@ export const signUp = [
       // Check if the file is a Buffer
       if (req.file && req.file.buffer) {
         // Use pico for image compression
-        // Replace 'pico' with the actual library and parameters as needed
         profileImageBuffer = await pico.compress(req.file.buffer);
       } else {
         // If it's not a Buffer, assume it's a base64 string
-        profileImageBuffer = req.body.profileImage;
+        profileImageBuffer = Buffer.from(profileImage, "base64");
       }
 
       // Continue with local signup (email/password)
@@ -90,6 +96,45 @@ export const signUp = [
   },
 ];
 
+export const updateProfile = [
+  upload.single("profileImage"),
+  async (req, res) => {
+    try {
+      const userEmail = req.body.email; // Assuming you include the user's email in the request body
+
+      const { profileImage, username, password, title, fullname } = req.body;
+
+      // Find the user by email
+      const user = await User.findOne({ email: userEmail });
+
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      // Update the user record with the new data
+      user.profileImage = profileImage || user.profileImage;
+      user.username = username || user.username;
+
+      // Hash the new password with Argon2 if provided
+      if (password) {
+        const hashedPassword = await argon2.hash(password);
+        user.password = hashedPassword;
+      }
+
+      user.title = title || user.title;
+      user.fullname = fullname || user.fullname;
+
+      // Save the updated user record
+      await user.save();
+
+      res.status(200).json({ message: "Profile updated successfully", user });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
+];
+//login controller
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -167,40 +212,3 @@ export const logout = (req, res) => {
 };
 //user profile update
 // authController.js
-
-// authController.js
-export const updateProfile = async (req, res) => {
-  try {
-    const userEmail = req.body.email; // Assuming you include the user's email in the request body
-
-    const { profileImage, username, password, title, fullname } = req.body;
-
-    // Find the user by email
-    const user = await User.findOne({ email: userEmail });
-
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
-
-    // Update the user record with the new data
-    user.profileImage = profileImage || user.profileImage;
-    user.username = username || user.username;
-
-    // Hash the new password with Argon2 if provided
-    if (password) {
-      const hashedPassword = await argon2.hash(password);
-      user.password = hashedPassword;
-    }
-
-    user.title = title || user.title;
-    user.fullname = fullname || user.fullname;
-
-    // Save the updated user record
-    await user.save();
-
-    res.status(200).json({ message: "Profile updated successfully", user });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-};

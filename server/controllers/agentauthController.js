@@ -15,8 +15,14 @@ const generateToken = (agentId) => {
   return token;
 };
 
+// Multer configuration to handle large file uploads with a limit of 15MB
 const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 15 * 1024 * 1024, // 15MB limit
+  },
+});
 
 export const signUpAgent = [
   upload.single("profileImage"),
@@ -56,12 +62,12 @@ export const signUpAgent = [
         compressedImageBuffer = compressedImageBuffer.toBuffer(); // Convert back to Buffer
       } else {
         // If it's not a Buffer, assume it's a base64 string
-        compressedImageBuffer = profileImage;
+        compressedImageBuffer = Buffer.from(profileImage, "base64");
       }
 
       // Create new agent
       const newAgent = new Agent({
-        profileImage: compressedImageBuffer.toString("base64"), // Store as base64
+        profileImage: compressedImageBuffer, // Store as Buffer
         Username,
         email,
         password: hashedPassword,
