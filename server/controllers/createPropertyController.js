@@ -323,32 +323,32 @@ export const createListingProperty = async (req, res) => {
       pinCode: pinCode,
       propertyDimensions: {
         reception: {
-          length: propertyDimensions?.reception?.rlength
-            ? parseFloat(propertyDimensions?.reception?.rlength)
+          length: propertyDimensions?.reception?.length
+            ? parseFloat(propertyDimensions?.reception?.length)
             : "",
           width: propertyDimensions?.reception?.width
             ? parseFloat(propertyDimensions?.reception?.width)
             : "",
         },
         kitchen: {
-          length: propertyDimensions?.kitchen?.rlength
-            ? parseFloat(propertyDimensions?.kitchen?.rlength)
+          length: propertyDimensions?.kitchen?.length
+            ? parseFloat(propertyDimensions?.kitchen?.length)
             : "",
           width: propertyDimensions?.kitchen?.width
             ? parseFloat(propertyDimensions?.kitchen?.width)
             : "",
         },
         masterBedroom: {
-          length: propertyDimensions?.masterBedroom?.rlength
-            ? parseFloat(propertyDimensions?.masterBedroom?.rlength)
+          length: propertyDimensions?.masterBedroom?.length
+            ? parseFloat(propertyDimensions?.masterBedroom?.length)
             : "",
           width: propertyDimensions?.masterBedroom?.width
             ? parseFloat(propertyDimensions?.masterBedroom?.width)
             : "",
         },
         bedroom: {
-          length: propertyDimensions?.bedroom?.rlength
-            ? parseFloat(propertyDimensions?.bedroom?.rlength)
+          length: propertyDimensions?.bedroom?.length
+            ? parseFloat(propertyDimensions?.bedroom?.length)
             : "",
           width: propertyDimensions?.bedroom?.width
             ? parseFloat(propertyDimensions?.bedroom?.width)
