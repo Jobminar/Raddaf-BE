@@ -1,9 +1,9 @@
 import argon2 from "argon2";
-import Agent from "../models/Agent.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import multer from "multer";
 import User from "../models/User.js";
+import pico from "pico";
 dotenv.config();
 
 const generateToken = (agentId) => {
@@ -59,7 +59,9 @@ export const signUp = [
 
       // Check if the file is a Buffer
       if (req.file && req.file.buffer) {
-        profileImageBuffer = req.file.buffer.toString("base64");
+        // Use pico for image compression
+        // Replace 'pico' with the actual library and parameters as needed
+        profileImageBuffer = await pico.compress(req.file.buffer);
       } else {
         // If it's not a Buffer, assume it's a base64 string
         profileImageBuffer = req.body.profileImage;

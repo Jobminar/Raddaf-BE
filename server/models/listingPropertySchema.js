@@ -15,11 +15,24 @@ const listingPropertySchema = new Schema({
   images: [{ Key: String, Value: String }],
   propertyDescription: String,
   propertyDimensions: {
-    reception: { rlength: String, Width: String },
-    kitchen: { rlength: String, Width: String },
-    masterBedroom: { rlength: String, Width: String },
-    bedroom: { rlength: String, Width: String },
+    reception: {
+      rlength: { type: Number, required: true },
+      Width: { type: Number, required: true },
+    },
+    kitchen: {
+      rlength: { type: Number, required: true },
+      Width: { type: Number, required: true },
+    },
+    masterBedroom: {
+      rlength: { type: Number, required: true },
+      Width: { type: Number, required: true },
+    },
+    bedroom: {
+      rlength: { type: Number, required: true },
+      Width: { type: Number, required: true },
+    },
   },
+
   nearby: {
     hospital: { distance: Number, name: String },
     school: { distance: Number, name: String },
@@ -46,6 +59,12 @@ const listingPropertySchema = new Schema({
   propertyValuationReport: [{ Key: String, Value: String }],
   price: { type: Number, default: 0 },
   place: { type: String, default: "United Kingdom" },
+  streetParking: { type: Boolean, default: false, required: false },
+  rearGarden: { type: Boolean, default: false, required: false },
+  gasCentralheating: { type: Boolean, default: false, required: false },
+  doubleGlazed: { type: Boolean, default: false, required: false },
+  Epc: { type: Boolean, default: false, required: false },
+  pinCode: Number,
   deleteFlag: { type: Boolean, default: false },
   scheduleDateTime: { type: Date },
   createdOn: { type: Date, default: Date.now() },

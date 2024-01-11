@@ -294,6 +294,12 @@ export const createListingProperty = async (req, res) => {
       specialConditions,
       price,
       place,
+      streetParking,
+      rearGarden,
+      gasCentralheating,
+      doubleGlazed,
+      Epc,
+      pinCode,
       ScheduleDateTime,
     } = req.body;
 
@@ -309,37 +315,43 @@ export const createListingProperty = async (req, res) => {
       specialConditions: specialConditions,
       place: req.body.place ? req.body.place : "United Kingdom",
       price: req.body.price ? req.body.price : 0,
+      streetParking: req.body.streetParking || false,
+      rearGarden: req.body.rearGarden || false,
+      gasCentralheating: req.body.gasCentralheating || false,
+      doubleGlazed: req.body.doubleGlazed || false,
+      Epc: req.body.Epc || false,
+      pinCode: pinCode,
       propertyDimensions: {
         reception: {
           length: propertyDimensions?.reception?.rlength
-            ? propertyDimensions?.reception?.rlength
+            ? parseFloat(propertyDimensions?.reception?.rlength)
             : "",
           width: propertyDimensions?.reception?.width
-            ? propertyDimensions?.reception?.width
+            ? parseFloat(propertyDimensions?.reception?.width)
             : "",
         },
         kitchen: {
           length: propertyDimensions?.kitchen?.rlength
-            ? propertyDimensions?.kitchen?.rlength
+            ? parseFloat(propertyDimensions?.kitchen?.rlength)
             : "",
           width: propertyDimensions?.kitchen?.width
-            ? propertyDimensions?.kitchen?.width
+            ? parseFloat(propertyDimensions?.kitchen?.width)
             : "",
         },
         masterBedroom: {
           length: propertyDimensions?.masterBedroom?.rlength
-            ? propertyDimensions?.masterBedroom?.rlength
+            ? parseFloat(propertyDimensions?.masterBedroom?.rlength)
             : "",
           width: propertyDimensions?.masterBedroom?.width
-            ? propertyDimensions?.masterBedroom?.width
+            ? parseFloat(propertyDimensions?.masterBedroom?.width)
             : "",
         },
         bedroom: {
           length: propertyDimensions?.bedroom?.rlength
-            ? propertyDimensions?.bedroom?.rlength
+            ? parseFloat(propertyDimensions?.bedroom?.rlength)
             : "",
           width: propertyDimensions?.bedroom?.width
-            ? propertyDimensions?.bedroom?.width
+            ? parseFloat(propertyDimensions?.bedroom?.width)
             : "",
         },
       },

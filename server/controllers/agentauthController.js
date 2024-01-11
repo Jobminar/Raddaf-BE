@@ -1,9 +1,9 @@
-// agentAuthController.js
 import argon2 from "argon2";
 import Agent from "../models/Agent.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import multer from "multer";
+import pico from "pico";
 
 dotenv.config();
 
@@ -34,9 +34,7 @@ export const signUpAgent = [
       } = req.body;
 
       // Check for existing email or username
-      const existingAgent = await Agent.findOne({
-        $or: [{ email }],
-      });
+      const existingAgent = await Agent.findOne({ email });
 
       if (existingAgent) {
         return res
@@ -47,19 +45,23 @@ export const signUpAgent = [
       // Hash password with Argon2
       const hashedPassword = await argon2.hash(password);
 
-      let profileImageBuffer;
+      let compressedImageBuffer;
 
-      // Check if the file is a Buffer
+      // Compress image using Pico
       if (req.file && req.file.buffer) {
-        profileImageBuffer = req.file.buffer.toString("base64");
+        compressedImageBuffer = await pico.resize(req.file.buffer, {
+          width: 300,
+          height: 300,
+        });
+        compressedImageBuffer = compressedImageBuffer.toBuffer(); // Convert back to Buffer
       } else {
         // If it's not a Buffer, assume it's a base64 string
-        profileImageBuffer = profileImage;
+        compressedImageBuffer = profileImage;
       }
 
       // Create new agent
       const newAgent = new Agent({
-        profileImage: profileImageBuffer,
+        profileImage: compressedImageBuffer.toString("base64"), // Store as base64
         Username,
         email,
         password: hashedPassword,
