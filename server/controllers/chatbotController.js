@@ -1,19 +1,15 @@
 import { NlpManager } from "node-nlp";
 import stringSimilarity from "string-similarity";
 import User from "../models/User.js";
+import ChattingHistory from "../models/chattingHistory.js";
 
 const SIMILARITY_THRESHOLD = 0.6;
 
 export const handleChatbotMessage = async (req, res) => {
   try {
-    const { userEmail, message } = req.body;
+    const { message } = req.body;
 
     // Retrieve user information using email
-    const user = await User.findOne({ email: userEmail });
-
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
 
     // Initialize NLP manager
     const manager = new NlpManager({ languages: ["en"] });
@@ -23,7 +19,15 @@ export const handleChatbotMessage = async (req, res) => {
 
     // Process the user's message
     const response = await manager.process("en", message);
+    if (response.intent === "EnterContactInformation") {
+      const email = response.entities.email;
+      const phoneNumber = response.entities.phoneNumber;
 
+      return res.json({
+        response:
+          "Thank you for providing your contact information. Our agent will reach out to you soon.",
+      });
+    }
     // Finding the similarities among previous messages
     const similarIntent = findMostSimilarIntent(
       response.intent,
@@ -31,10 +35,7 @@ export const handleChatbotMessage = async (req, res) => {
     );
 
     // Construct a personalized response based on the most similar intent and user data
-    const personalizedResponse = generatePersonalizedResponse(
-      similarIntent,
-      user
-    );
+    const personalizedResponse = generatePersonalizedResponse(similarIntent);
 
     res.json({ response: personalizedResponse });
   } catch (error) {
@@ -52,6 +53,22 @@ const findMostSimilarIntent = (userIntent, availableIntents) => {
     return matches.bestMatch.target;
   } else {
     return "Unknown"; // Default intent for low similarity
+  }
+};
+export const handleContactRoute = async (req, res) => {
+  try {
+    const { email, phoneNumber, message } = req.body;
+
+    // Create a new document in the ChattingHistory collection with the user details and the chat message
+    await ChattingHistory.create({ email, phoneNumber, message });
+
+    res.json({
+      success: true,
+      message: "Contact information and chat history stored successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 

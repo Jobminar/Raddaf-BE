@@ -1,9 +1,13 @@
 import express from "express";
-import { verifyToken } from "../middleware/authMiddleware.js";
-import { handleChatbotMessage } from "../controllers/chatbotController.js";
+
+import {
+  handleChatbotMessage,
+  handleContactRoute,
+} from "../controllers/chatbotController.js";
 
 const router = express.Router();
 
-router.post("/chatbot", verifyToken, handleChatbotMessage);
+router.post("/chatbot", handleChatbotMessage);
+router.post("/chatbot/contact", handleContactRoute);
 
 export default router;
