@@ -1,0 +1,93 @@
+{
+    "intents": [
+        {
+            "name": "Greeting",
+            "responses": [
+                "Hi! This is Raddaf, your real estate buddy. How may I help you today?"
+            ]
+        },
+        {
+            "name": "IdentifyRole",
+            "questions": [
+                "Are you looking to buy, sell, or rent a property?",
+                "Are you a tenant experiencing issues with your property?"
+            ]
+        },
+        {
+            "name": "BuyerSellerOptions",
+            "responses": [
+                "Here are some options for you:",
+                "* Issue in Sale",
+                "* Rent/Letted Property",
+                "* Letting Property",
+                "* Issue with website",
+                "* Profile Issues",
+                "* Call Agent"
+            ]
+        },
+        {
+            "name": "TenantOptions",
+            "responses": [
+                "Here are some ways I can help:",
+                "* Agreement Issues",
+                "* Repairs",
+                "* Billing Issues",
+                "* Call Agent"
+            ]
+        },
+        {
+            "name": "IssueInSale",
+            "questions": [
+                "Why do you want to revert the listing request?"
+            ]
+        },
+        {
+            "name": "RentLettedProperty",
+            "questions": [
+                "Is the issue related to a property you currently own or want to rent out?"
+            ]
+        },
+        {
+            "name": "LetLettingProperty",
+            "questions": [
+                "Can you tell me more about the property you want to let?"
+            ]
+        },
+        {
+            "name": "WebsiteProfileIssue",
+            "questions": [
+                "Can you describe the issue you're experiencing?"
+            ]
+        },
+        {
+            "name": "AgreementIssue",
+            "questions": [
+                "What specific part of the agreement are you concerned about?"
+            ]
+        },
+        {
+            "name": "Repairs",
+            "questions": [
+                "What type of repair is needed?"
+            ]
+        },
+        {
+            "name": "BillingIssue",
+            "questions": [
+                "Can you explain the billing concern you have?"
+            ]
+        },
+        {
+            "name": "SendFeedback",
+            "instructions": [
+                "Send feedback with user contact information and details to relevant agent (Landlord/Zone Agent)"
+            ]
+        },
+        {
+            "name": "End",
+            "responses": [
+                "Your feedback has been sent, and an agent will contact you soon. Have a great day!"
+            ]
+        }
+    ]
+}

@@ -16,6 +16,8 @@ import adminRoutes from "./routes/adminRoutes.js";
 import session from "express-session";
 import Agent from "./models/Agent.js";
 import callBackAgentRoutes from "./routes/callBackAgentRoutes.js";
+import nlp from "node-nlp";
+import chatbotRoutes from "./routes/chatBotRoutes.js";
 // Load environment variables early
 dotenv.config();
 
@@ -93,7 +95,7 @@ app.use("/admin", adminRoutes);
 app.use("/agent-auth", agentAuthRoutes);
 app.use("/listing-property", listingPropertyRoutes);
 app.use("/", callBackAgentRoutes);
-
+app.use("/", chatbotRoutes);
 // Connect to MongoDB efficiently changed url to string
 async function connectToMongo() {
   try {
