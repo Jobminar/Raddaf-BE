@@ -1,43 +1,27 @@
 import { NlpManager } from "node-nlp";
 import stringSimilarity from "string-similarity";
-import User from "../models/User.js";
 import ChattingHistory from "../models/chattingHistory.js";
 
+const GENERIC_GREETING =
+  "Hi! This is Raddaf, your real estate buddy. How may I help you today?";
 const SIMILARITY_THRESHOLD = 0.6;
 
 export const handleChatbotMessage = async (req, res) => {
   try {
     const { message } = req.body;
-
-    // Retrieve user information using email
+    if (!message || message.trim() === "") {
+      return res.json({ response: "Please provide a valid message." });
+    }
 
     // Initialize NLP manager
     const manager = new NlpManager({ languages: ["en"] });
-
-    // Train the NLP manager with your intents
     trainNlpManager(manager);
 
     // Process the user's message
     const response = await manager.process("en", message);
-    if (response.intent === "EnterContactInformation") {
-      const email = response.entities.email;
-      const phoneNumber = response.entities.phoneNumber;
 
-      return res.json({
-        response:
-          "Thank you for providing your contact information. Our agent will reach out to you soon.",
-      });
-    }
-    // Finding the similarities among previous messages
-    const similarIntent = findMostSimilarIntent(
-      response.intent,
-      manager.getIntentDomain()
-    );
-
-    // Construct a personalized response based on the most similar intent and user data
-    const personalizedResponse = generatePersonalizedResponse(similarIntent);
-
-    res.json({ response: personalizedResponse });
+    // Return the personalized response
+    return res.json({ response: response.answer || GENERIC_GREETING });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
@@ -45,16 +29,6 @@ export const handleChatbotMessage = async (req, res) => {
 };
 
 // Function to find the most similar intent based on string similarity
-const findMostSimilarIntent = (userIntent, availableIntents) => {
-  const intents = availableIntents.map((intent) => intent.name);
-  const matches = stringSimilarity.findBestMatch(userIntent, intents);
-
-  if (matches.bestMatch.rating >= SIMILARITY_THRESHOLD) {
-    return matches.bestMatch.target;
-  } else {
-    return "Unknown"; // Default intent for low similarity
-  }
-};
 export const handleContactRoute = async (req, res) => {
   try {
     const { email, phoneNumber, message } = req.body;
@@ -73,67 +47,81 @@ export const handleContactRoute = async (req, res) => {
 };
 
 // Function to generate a personalized response based on intent and user data
-const generatePersonalizedResponse = (intent, user) => {
+const generatePersonalizedResponse = (intent) => {
   switch (intent) {
+    case "Sell":
+      return "What kind of property do you want to sell, commercial or residential?";
+    case "Tolet":
+      return "What kind of property do you want to sell, commercial or residential?";
+
+    case "Yes":
+      return `Certainly! Here are some options:
+        - Report an Issue with Sale
+        - Explore Renting or Letting a Property
+        - Property Management
+        - Resolve Website or Profile Issues
+        - Connect with our Agent`;
+    case "Hi ":
+    case " ":
     case "Greeting":
-      return `Hi ${user.username}! This is Raddaf, your real estate buddy. How may I help you today?`;
-
+      return `Hi there! Welcome to Raddaf, your trusted real estate companion. How may I assist you today? Here are some options to get started:
+        - Report an Issue with Sale
+        - Explore Renting or Letting a Property
+        - Property Management
+        - Resolve Website or Profile Issues
+        - Connect with our Agent`;
     case "IdentifyRole":
-      return `Hi ${user.username}, are you looking to buy, sell, or rent a property, or are you a tenant experiencing issues with your property?`;
-
+      return `Greetings! Are you looking to buy, sell, or rent a property, or perhaps you're a tenant facing issues with your current property? Let me know so I can guide you accordingly.`;
     case "BuyerSellerOptions":
-      return `Hi ${user.username}, here are some options for you:
-        - Issue in Sale
-        - Rent/Letted Property
-        - Letting Property
-        - Issue with website
-        - Profile Issues
-        - Call Agent`;
-
+      return `Hello! If you're interested in buying or selling, here are some options for you:
+        - Report an Issue with Sale
+        - Explore Renting or Letting a Property
+        - Property Management
+        - Resolve Website or Profile Issues
+        - Connect with our Agent`;
     case "TenantOptions":
-      return `Hi ${user.username}, here are some ways I can help:
-        - Agreement Issues
-        - Repairs
-        - Billing Issues
-        - Call Agent`;
-
+      return `Hi there! If you're a tenant, here are some ways I can assist you:
+        - Address Agreement Issues
+        - Handle Repairs
+        - Resolve Billing Issues
+        - Connect with our Agent`;
     case "IssueInSale":
-      return "Can you provide more details on why you want to revert the listing request?";
-
+      return "Certainly! To assist you better, could you provide more details on why you want to revert the listing request for your property?";
     case "RentLettedProperty":
-      return "Is the issue related to a property you currently own or want to rent out?";
-
+      return "Sure thing! Is the issue related to a property you currently own or one you want to rent out? Provide more details so I can guide you appropriately.";
     case "LetLettingProperty":
-      return "Sure, can you tell me more about the property you want to let?";
-
+      return "Absolutely! To get started, please share more information about the property you're interested in letting, such as location, type, and any specific requirements.";
     case "WebsiteProfileIssue":
-      return "Certainly! Can you describe the issue you're experiencing with the website or your profile?";
-
+      return "Of course! I'm here to help. Could you please describe in detail the issue you're experiencing with the website or your profile?";
     case "AgreementIssue":
-      return "What specific part of the agreement are you concerned about?";
-
+      return "Understood. To better assist you, could you specify which part of the agreement is causing concern? This will help me provide more accurate guidance.";
     case "Repairs":
-      return "Got it! What type of repair is needed?";
-
+      return "Got it! Understanding the type of repair needed is crucial. Could you please provide more details about the specific repair or issue you're facing?";
     case "BillingIssue":
-      return "Sure, can you explain the billing concern you have?";
-
+      return "Certainly! To address the billing concern effectively, please explain the details of the issue you're experiencing. This will help us resolve it promptly.";
     case "SendFeedback":
-      return "To send feedback, please provide your contact information and details. Our relevant agent (Landlord/Zone Agent) will contact you.";
-
+      return "We value your feedback! To send feedback, please provide your contact information and additional details. Our dedicated agent (Landlord/Zone Agent) will reach out to you.";
     case "End":
-      return "Your feedback has been sent, and an agent will contact you soon. Have a great day!";
-
+      return "Thank you for your feedback! Your input has been received, and our agent will be in touch with you soon. Have a wonderful day!";
     case "Unknown":
-      return "I didn't quite get that. Can you please rephrase or specify your request?";
-
+      return "I didn't quite catch that. Could you please rephrase or provide more details about your request? Your clarification will help me assist you more effectively.";
     default:
-      return "I did not understand that. Can you please rephrase or specify your request?";
+      return "I'm sorry, I didn't understand that. Can you please rephrase or provide more information? Your input is crucial for me to assist you better.";
   }
 };
 
 // Function to train the NLP manager with your intents
+// Function to train the NLP manager with your intents
 const trainNlpManager = (manager) => {
+  manager.addDocument("en", "sell", "Sell");
+
+  // Add variations and potential questions related to selling
+  manager.addDocument("en", "I want to sell my property", "Sell");
+  manager.addDocument("en", "sell my house", "Sell");
+  manager.addDocument("en", "sell commercial property", "Sell");
+  manager.addDocument("en", "how can I sell my house", "Sell");
+
+  // Add more training data for other intents
   // Greeting
   manager.addDocument("en", "Hi", "Greeting..This Raddaf buddy.");
   manager.addDocument("en", "Hello", "Greeting..This Raddaf buddy.");
@@ -168,7 +156,36 @@ const trainNlpManager = (manager) => {
   manager.addDocument("en", "What services for tenants?", "TenantOptions");
   manager.addDocument("en", "Assistance for tenants", "TenantOptions");
 
-  // Add more training data for other intents
+  // Additional training data for more intents
+  manager.addDocument("en", "I have a problem with my listing", "IssueInSale");
+  manager.addDocument(
+    "en",
+    "I want to rent out my property",
+    "LetLettingProperty"
+  );
+  manager.addDocument(
+    "en",
+    "I need help with website issues",
+    "WebsiteProfileIssue"
+  );
 
+  // Additional variations and validations
+  manager.addDocument(
+    "en",
+    "I need assistance with selling my property",
+    "BuyerSellerOptions"
+  );
+  manager.addDocument(
+    "en",
+    "Tell me about renting out my house",
+    "LetLettingProperty"
+  );
+  manager.addDocument(
+    "en",
+    "I'm having trouble with my profile",
+    "WebsiteProfileIssue"
+  );
+
+  // Train the manager
   manager.train();
 };

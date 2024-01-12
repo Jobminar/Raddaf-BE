@@ -2,8 +2,8 @@
 import mongoose from "mongoose";
 
 const chattingHistorySchema = new mongoose.Schema({
-  email: String,
-  phoneNumber: String,
+  email: { type: String, required: false },
+  phoneNumber: { type: String, required: false },
   message: String,
   timestamp: { type: Date, default: Date.now },
 });
