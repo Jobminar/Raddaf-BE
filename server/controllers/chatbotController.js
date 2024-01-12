@@ -64,12 +64,35 @@ const generatePersonalizedResponse = (intent) => {
     case "Hi ":
     case " ":
     case "Greeting":
-      return `Hi there! Welcome to Raddaf, your trusted real estate companion. How may I assist you today? Here are some options to get started:
-        - Report an Issue with Sale
-        - Explore Renting or Letting a Property
-        - Property Management
-        - Resolve Website or Profile Issues
-        - Connect with our Agent`;
+    case "GreetingOptions":
+      return [
+        {
+          text: "Report an Issue with Sale",
+          value: "Report an Issue with Sale",
+          actionType: "sendMessage",
+        },
+        {
+          text: "Explore Renting or Letting a Property",
+          value: "Explore Renting or Letting a Property",
+          actionType: "sendMessage",
+        },
+        {
+          text: "Property Management",
+          value: "Property Management",
+          actionType: "sendMessage",
+        },
+        {
+          text: "Resolve Website or Profile Issues",
+          value: "Resolve Website or Profile Issues",
+          actionType: "sendMessage",
+        },
+        {
+          text: "Connect with our Agent",
+          value: "Connect with our Agent",
+          actionType: "sendMessage",
+        },
+      ];
+
     case "IdentifyRole":
       return `Greetings! Are you looking to buy, sell, or rent a property, or perhaps you're a tenant facing issues with your current property? Let me know so I can guide you accordingly.`;
     case "BuyerSellerOptions":
