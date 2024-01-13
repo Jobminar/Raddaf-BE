@@ -23,18 +23,12 @@ export async function saveAdmin(req, res) {
       });
     }
 
-    // Hash the password using Node.js built-in crypto module
-    const hashedPassword = crypto
-      .createHash("sha256")
-      .update(password)
-      .digest("hex");
-
     // Admin doesn't exist
 
     const insertAdmin = new Admin({
       username: username,
       email: email,
-      password: hashedPassword,
+      password: password, // Storing plain text password
       fullname: fullname,
       role: role,
       phoneNo: phoneNo,
@@ -64,13 +58,8 @@ export async function adminLogin(req, res) {
       return res.status(404).json({ error: "Admin not found" });
     }
 
-    // Validate password using Node.js built-in crypto module
-    const hashedPassword = crypto
-      .createHash("sha256")
-      .update(password)
-      .digest("hex");
-
-    if (hashedPassword !== admin.password) {
+    // Validate password
+    if (password !== admin.password) {
       return res.status(401).json({ error: "Invalid password" });
     }
 
