@@ -77,3 +77,25 @@ export const getPropertiesByPrice = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+export const approveListing = async (req, res) => {
+  try {
+    const { listingId } = req.params;
+
+    // Find the listing by ID and update the isVerified field
+    const updatedListing = await ListingProperty.findByIdAndUpdate(
+      listingId,
+      { $set: { isVerified: true } },
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedListing) {
+      return res.status(404).json({ msg: "Listing not found" });
+    }
+
+    res.status(200).json(updatedListing);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};

@@ -301,6 +301,7 @@ export const createListingProperty = async (req, res) => {
       Epc,
       pinCode,
       ScheduleDateTime,
+      deleteFlag,
     } = req.body;
 
     let newProp = {
@@ -403,9 +404,16 @@ export const createListingProperty = async (req, res) => {
       localAuthoritySearch: localAuthoritySearchResult,
       floorplan: floorPlanResult,
       propertyValuationReport: propertyValuationReportResult,
+      streetParking: streetParking || false,
+      rearGarden: rearGarden || false,
+      gasCentralheating: gasCentralheating || false,
+      doubleGlazed: doubleGlazed || false,
+      Epc: Epc || false,
+      pinCode: pinCode,
       scheduleDateTime: ScheduleDateTime
         ? new Date(ScheduleDateTime).toISOString()
         : "",
+      deleteFlag: deleteFlag || false,
     };
 
     // Create a new property listing with the uploaded file details

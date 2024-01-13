@@ -52,4 +52,6 @@ router.post(
   "/get-properties/by-price",
   listingPropertyController.getPropertiesByPrice
 );
+
+router.use("/approvelist", listingPropertyController.approveListing);
 export default router;

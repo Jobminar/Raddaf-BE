@@ -1,11 +1,14 @@
 import { NlpManager } from "node-nlp";
-import stringSimilarity from "string-similarity";
 import ChattingHistory from "../models/chattingHistory.js";
 
 const GENERIC_GREETING =
   "Hi! This is Raddaf, your real estate buddy. How may I help you today?";
 const SIMILARITY_THRESHOLD = 0.6;
-
+const initializeNlpManager = () => {
+  const manager = new NlpManager({ languages: ["en"] });
+  trainNlpManager(manager);
+  return manager;
+};
 export const handleChatbotMessage = async (req, res) => {
   try {
     const { message } = req.body;
@@ -14,21 +17,24 @@ export const handleChatbotMessage = async (req, res) => {
     }
 
     // Initialize NLP manager
-    const manager = new NlpManager({ languages: ["en"] });
-    trainNlpManager(manager);
+    const manager = initializeNlpManager();
 
     // Process the user's message
     const response = await manager.process("en", message);
 
-    // Return the personalized response
-    return res.json({ response: response.answer || GENERIC_GREETING });
+    console.log("Intent:", response.intent); // Add this line for debugging
+
+    const personalizedResponse = generatePersonalizedResponse(response.intent);
+
+    console.log("Personalized Response:", personalizedResponse); // Add this line for debugging
+
+    return res.json({ response: personalizedResponse || GENERIC_GREETING });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
-// Function to find the most similar intent based on string similarity
 export const handleContactRoute = async (req, res) => {
   try {
     const { email, phoneNumber, message } = req.body;
