@@ -9,7 +9,7 @@ export async function saveAdmin(req, res) {
 
     // validation should be here
 
-    // check if admin with same email already exist or not
+    // check if admin with the same email or phone number already exists
     const admin = await Admin.find({
       $or: [{ email: email }, { phoneNo: phoneNo }],
     });
@@ -18,16 +18,19 @@ export async function saveAdmin(req, res) {
 
     if (admin && admin.length > 0) {
       return res.status(400).json({
-        error: "Admin With Email or Phone Number Already  Exist",
+        error: "Admin With Email or Phone Number Already Exist",
       });
     }
+
+    // Hash the password using Argon2
+    const hashedPassword = await argon2.hash(password);
 
     // Admin doesn't exist
 
     const insertAdmin = new Admin({
       username: username,
       email: email,
-      password: password,
+      password: hashedPassword, // Store the hashed password
       fullname: fullname,
       role: role,
       phoneNo: phoneNo,
@@ -57,8 +60,8 @@ export async function adminLogin(req, res) {
       return res.status(404).json({ error: "Admin not found" });
     }
 
-    // Validate password
-    const isValidPassword = await bcrypt.compare(password, admin.password);
+    // Validate password using Argon2
+    const isValidPassword = await argon2.verify(admin.password, password);
 
     if (!isValidPassword) {
       return res.status(401).json({ error: "Invalid password" });
