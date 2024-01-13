@@ -106,9 +106,9 @@ export const loginAgent = async (req, res) => {
     }
 
     // Check if the agent is verified
-    if (!agent.verified) {
-      return res.status(401).json({ error: "Agent not verified" });
-    }
+    // if (!agent.verified) {
+    //   return res.status(401).json({ error: "Agent not verified" });
+    // }
 
     // If all checks pass, generate a token and send success response with user data
     const token = generateToken(agent._id);
