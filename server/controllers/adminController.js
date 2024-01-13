@@ -50,24 +50,35 @@ export async function adminLogin(req, res) {
   try {
     const { email, password } = req.body;
 
-    // Find admin by email
-    const admin = await Admin.findOne({ email });
+    // Find agent by email
+    const agent = await Agent.findOne({ email });
 
-    if (!admin) {
-      return res.status(404).json({ error: "Admin not found" });
+    if (!agent) {
+      return res.status(404).json({ error: "Agent not found" });
     }
 
     // Validate password
-    const isValidPassword = await bcrypt.compare(password, admin.password);
+    const isValidPassword = await bcrypt.compare(password, agent.password);
 
     if (!isValidPassword) {
       return res.status(401).json({ error: "Invalid password" });
     }
 
-    // Admin successfully authenticated
-    res.status(200).json({ message: "Admin login successful" });
+    // Agent successfully authenticated
+    res.status(200).json({
+      message: "Agent login successful",
+      agent: {
+        id: agent._id,
+        profileImage: agent.profileImage,
+        username: agent.username,
+        email: agent.email,
+        title: agent.title,
+        fullname: agent.fullname,
+        // Add any additional fields you want to include
+      },
+    });
   } catch (error) {
-    console.error("Error in adminLogin function", error);
+    console.error("Error in login function", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 }
