@@ -1,7 +1,7 @@
 import Admin from "../models/Admin.js";
 import Agent from "../models/Agent.js";
 import { sendEmail } from "../services/sendEmailService.js";
-import argon2 from "argon2";
+import crypto from "crypto";
 
 export async function saveAdmin(req, res) {
   try {
@@ -23,19 +23,18 @@ export async function saveAdmin(req, res) {
       });
     }
 
-    // Hash the password using Argon2
-    const hashedPassword = await argon2.hash({
-      pass: password,
-      salt: "somesalt", // you should use a random salt
-      distPath: "dist", // the path to the argon2.wasm file
-    });
+    // Hash the password using Node.js built-in crypto module
+    const hashedPassword = crypto
+      .createHash("sha256")
+      .update(password)
+      .digest("hex");
 
     // Admin doesn't exist
 
     const insertAdmin = new Admin({
       username: username,
       email: email,
-      password: hashedPassword.hashHex, // Store the hashed password in hex format
+      password: hashedPassword,
       fullname: fullname,
       role: role,
       phoneNo: phoneNo,
@@ -65,14 +64,13 @@ export async function adminLogin(req, res) {
       return res.status(404).json({ error: "Admin not found" });
     }
 
-    // Validate password using Argon2
-    const isValidPassword = await argon2.verify({
-      pass: password,
-      hash: admin.password, // the stored hashed password
-      distPath: "dist", // the path to the argon2.wasm file
-    });
+    // Validate password using Node.js built-in crypto module
+    const hashedPassword = crypto
+      .createHash("sha256")
+      .update(password)
+      .digest("hex");
 
-    if (!isValidPassword) {
+    if (hashedPassword !== admin.password) {
       return res.status(401).json({ error: "Invalid password" });
     }
 
