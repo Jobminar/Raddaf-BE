@@ -104,24 +104,31 @@ export async function getAgentsListForApproval(req, res) {
 
 export async function approveAgent(req, res) {
   try {
-    const { email, verrifiedStatus } = req.body;
+    const { email, verifiedStatus } = req.body;
 
-    //validation here
-    sendEmail();
+    // Validate the input if needed
 
-    // const updateResult =  await Agent.updateOne({ email : email} , {
-    //     "$set": {
-    //         verified : verrifiedStatus,
-    //         approvedOn : new Date().toISOString()
-    //     } }, { new : true}
-    // )
-    // console.log("update result is" , updateResult);
-    // if(updateResult){
-    //     res.status(200).json({ msg: "Verified Status Has Been Successfully Updated" });
-    // }else{
-    //     res.status(400).json({ msg: "Unable to update the Agent" });
-    // }
+    // Update the agent's verified status and set approvedOn to the current date
+    const updateResult = await Agent.updateOne(
+      { email: email },
+      {
+        $set: {
+          verified: true,
+          approvedOn: new Date().toISOString(),
+        },
+      }
+    );
+
+    // Check the update result
+    if (updateResult.nModified > 0) {
+      res
+        .status(200)
+        .json({ msg: "Verified Status Has Been Successfully Updated" });
+    } else {
+      res.status(400).json({ msg: "Unable to update the Agent" });
+    }
   } catch (error) {
-    console.log("Error in approveAgent Code", error);
+    console.error("Error in approveAgent Code", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 }
