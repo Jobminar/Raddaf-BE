@@ -24,7 +24,7 @@ export async function saveAdmin(req, res) {
 
     // Admin doesn't exist
 
-    const insertAdmin = await new Admin({
+    const insertAdmin = new Admin({
       username: username,
       email: email,
       password: password,
