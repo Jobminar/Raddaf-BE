@@ -76,6 +76,18 @@ export async function adminLogin(req, res) {
       return res.status(401).json({ error: "Invalid password" });
     }
 
+    // Set admin data into session storage
+    req.session.admin = {
+      id: admin._id,
+      username: admin.username,
+      email: admin.email,
+      role: admin.role,
+      fullName: admin.fullName,
+      phoneNo: admin.phoneNo,
+      adminZones: admin.adminZones,
+      // Add any additional fields you want to include
+    };
+
     // Admin successfully authenticated
     res.status(200).json({
       message: "Admin login successful",
