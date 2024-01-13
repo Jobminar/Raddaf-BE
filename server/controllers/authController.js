@@ -139,23 +139,24 @@ export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
+    const agent = await agent.findOne({ email });
 
-    if (user && (await argon2.verify(user.password, password))) {
+    if (agent && (await argon2.verify(agent.password, password))) {
       // Generate a JWT token
-      const token = generateToken(user._id);
+      const token = generateToken(agent._id);
 
-      // Send the token to the client along with other user data
+      // Send the token to the client along with other agent data
       res.status(200).json({
         message: "Login successful.",
-        user: {
-          id: user._id,
-          profileImage: user.profileImage,
-          username: user.username,
-          email: user.email,
-          password: user.password,
-          title: user.title,
-          fullname: user.fullname,
+        agent: {
+          id: agent._id,
+          profileImage: agent.profileImage,
+          username: agent.username,
+          email: agent.email,
+          password: agent.password, // Note: Sending the password in the response is not recommended
+          title: agent.title,
+          fullname: agent.fullname,
+          // Add any additional fields you want to include
         },
         token,
       });
