@@ -24,14 +24,18 @@ export async function saveAdmin(req, res) {
     }
 
     // Hash the password using Argon2
-    const hashedPassword = await argon2.hash(password);
+    const hashedPassword = await argon2.hash({
+      pass: password,
+      salt: "somesalt", // you should use a random salt
+      distPath: "dist", // the path to the argon2.wasm file
+    });
 
     // Admin doesn't exist
 
     const insertAdmin = new Admin({
       username: username,
       email: email,
-      password: hashedPassword, // Store the hashed password
+      password: hashedPassword.hashHex, // Store the hashed password in hex format
       fullname: fullname,
       role: role,
       phoneNo: phoneNo,
@@ -62,7 +66,11 @@ export async function adminLogin(req, res) {
     }
 
     // Validate password using Argon2
-    const isValidPassword = await argon2.verify(admin.password, password);
+    const isValidPassword = await argon2.verify({
+      pass: password,
+      hash: admin.password, // the stored hashed password
+      distPath: "dist", // the path to the argon2.wasm file
+    });
 
     if (!isValidPassword) {
       return res.status(401).json({ error: "Invalid password" });
@@ -118,7 +126,6 @@ export async function getAgentsListForApproval(req, res) {
   }
 }
 
-// Use arrow function for async function
 // Use arrow function for async function
 export const approveAgent = async (req, res) => {
   try {
