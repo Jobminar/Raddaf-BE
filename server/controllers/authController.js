@@ -19,7 +19,7 @@ const storage = multer.memoryStorage();
 const upload = multer({
   storage: storage,
   limits: {
-    fileSize: 15 * 1024 * 1024, // 15MB limit
+    fileSize: 18 * 1024 * 1024,
   },
 });
 
@@ -139,36 +139,50 @@ export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const agent = await agent.findOne({ email });
-
-    if (agent && (await argon2.verify(agent.password, password))) {
-      // Generate a JWT token
-      const token = generateToken(agent._id);
-
-      // Send the token to the client along with other agent data
-      res.status(200).json({
-        message: "Login successful.",
-        agent: {
-          id: agent._id,
-          profileImage: agent.profileImage,
-          username: agent.username,
-          email: agent.email,
-          password: agent.password, // Note: Sending the password in the response is not recommended
-          title: agent.title,
-          fullname: agent.fullname,
-          // Add any additional fields you want to include
-        },
-        token,
+    // Check if email or username is provided
+    if (!email || !password) {
+      return res.status(400).json({
+        error: "Both email/username and password are required",
       });
-    } else {
-      res.status(401).json({ error: "Invalid credentials." });
     }
+
+    // Find the user by email or username
+    const user = await User.findOne({
+      $or: [{ email: email }],
+    });
+
+    if (!user) {
+      return res.status(401).json({ error: "Invalid credentials" });
+    }
+
+    // Verify the password using Argon2
+    const passwordValid = await argon2.verify(user.password, password);
+
+    if (!passwordValid) {
+      return res.status(401).json({ error: "Invalid credentials" });
+    }
+
+    // Generate and send a new JWT token
+    const token = generateToken(user._id);
+
+    // Return user data and token
+    res.status(200).json({
+      message: "Login successful",
+      user: {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        profileImage: user.profileImage,
+        title: user.title,
+        fullname: user.fullname,
+      },
+      token,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
 export const checkSession = async (req, res) => {
   const token = req.headers.authorization?.split(" ")[1];
 
