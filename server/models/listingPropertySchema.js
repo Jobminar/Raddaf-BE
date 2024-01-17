@@ -5,7 +5,6 @@ const Schema = mongoose.Schema;
 
 const listingPropertySchema = new Schema({
   propertyId: String,
-  userType: { type: String, enum: ["User", "Agent"], required: true },
   purpose: { type: String, enum: ["Sale", "Tolet"], required: true },
   propertyType: {
     type: [String],
