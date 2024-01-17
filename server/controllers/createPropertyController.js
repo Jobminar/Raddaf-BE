@@ -306,6 +306,7 @@ export const createListingProperty = async (req, res) => {
 
     let newProp = {
       propertyId: uuid,
+      userType: userType ? userType : "User",
       purpose: purpose ? purpose : "SALE",
       propertyType: propertyType,
       isVerified: userType == "Agent" ? true : false,
