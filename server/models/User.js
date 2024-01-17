@@ -14,8 +14,8 @@ const userSchema = new Schema({
   title: String,
   fullname: String,
   language: String,
-  googleId: { type: String, unique: true, required: false },
-  facebookId: { type: String, unique: true, required: false },
+  googleId: { type: String, required: false },
+  facebookId: { type: String, required: false },
 });
 
 // No need for pre-save hook related to image conversion
