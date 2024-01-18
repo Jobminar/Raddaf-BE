@@ -145,3 +145,22 @@ export const approveAgent = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+//Get verified agents
+export async function getAllVerifiedAgents(req, res) {
+  try {
+    // Find all agents with verified status set to "true"
+    const verifiedAgents = await Agent.find({ verified: true });
+
+    console.log("Verified Agents:", verifiedAgents);
+
+    if (verifiedAgents && verifiedAgents.length > 0) {
+      res.status(200).json({ msg: "Success", result: verifiedAgents });
+    } else {
+      res.status(404).json({ msg: "No Verified Agents found" });
+    }
+  } catch (error) {
+    console.error("Error in getAllVerifiedAgents function", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
