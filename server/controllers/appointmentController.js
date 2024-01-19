@@ -1,6 +1,6 @@
 // controllers/appointmentController.js
 
-import Appointment from "../models/Appointment.js";
+import Appointment from "../models/AppointmentSchema.js";
 import User from "../models/User.js";
 
 export const createAppointment = async (req, res) => {
@@ -41,8 +41,6 @@ export const createAppointment = async (req, res) => {
 };
 
 // controllers/appointmentController.js
-
-import Appointment from "../models/Appointment.js";
 
 export const getAppointmentsByZone = async (req, res) => {
   try {

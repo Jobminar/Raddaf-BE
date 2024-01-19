@@ -18,8 +18,8 @@ import Agent from "./models/Agent.js";
 import callBackAgentRoutes from "./routes/callBackAgentRoutes.js";
 import nlp from "node-nlp";
 import chatbotRoutes from "./routes/chatBotRoutes.js";
-import appointmentRouter from "./routes/Appointment.js";
-import Appointment from "./models/AppointmentSchema.js";
+import appointmentRoutes from "./routes/Appointment.js";
+
 // Load environment variables early
 dotenv.config();
 

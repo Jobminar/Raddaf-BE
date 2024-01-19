@@ -12,24 +12,24 @@ const listingPropertySchema = new Schema({
     required: true,
   },
   isVerified: { type: Boolean, default: false },
-  images: [{ Key: String, Value: String, required: false }],
+  images: [{ Key: String, Value: String }],
   propertyDescription: String,
   propertyDimensions: {
     reception: {
-      length: { type: Number, required: false },
-      width: { type: Number, required: false },
+      length: { type: Number, required: true },
+      width: { type: Number, required: true },
     },
     kitchen: {
-      length: { type: Number, required: false },
-      width: { type: Number, required: false },
+      length: { type: Number, required: true },
+      width: { type: Number, required: true },
     },
     masterBedroom: {
-      length: { type: Number, required: false },
-      width: { type: Number, required: false },
+      length: { type: Number, required: true },
+      width: { type: Number, required: true },
     },
     bedroom: {
-      length: { type: Number, required: false },
-      width: { type: Number, required: false },
+      length: { type: Number, required: true },
+      width: { type: Number, required: true },
     },
   },
 
