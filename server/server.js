@@ -18,6 +18,8 @@ import Agent from "./models/Agent.js";
 import callBackAgentRoutes from "./routes/callBackAgentRoutes.js";
 import nlp from "node-nlp";
 import chatbotRoutes from "./routes/chatBotRoutes.js";
+import appointmentRouter from "./routes/Appointment.js";
+import Appointment from "./models/AppointmentSchema.js";
 // Load environment variables early
 dotenv.config();
 
@@ -90,6 +92,7 @@ passport.deserializeUser((id, done) => {
 // Use authentication routes for users
 app.use("/auth", authRoutes);
 app.use("/", evalRequestRoutes);
+app.use("/", appointmentRoutes);
 // Use authentication routes for agents
 app.use("/admin", adminRoutes);
 app.use("/agent-auth", agentAuthRoutes);
