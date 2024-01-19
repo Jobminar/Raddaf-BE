@@ -304,6 +304,7 @@ export const createListingProperty = async (req, res) => {
       deleteFlag,
     } = req.body;
 
+    console.log("the request body 418", req.body);
     let newProp = {
       propertyId: uuid,
       userType: userType ? userType : "User",
