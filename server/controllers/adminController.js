@@ -164,3 +164,21 @@ export async function getAllVerifiedAgents(req, res) {
     res.status(500).json({ error: "Internal Server Error" });
   }
 }
+
+export async function getAllAdmins(req, res) {
+  try {
+    // Find all admins
+    const admins = await Admin.find();
+
+    console.log("Admins:", admins);
+
+    if (admins && admins.length > 0) {
+      res.status(200).json({ msg: "Success", result: admins });
+    } else {
+      res.status(404).json({ msg: "No Admins found" });
+    }
+  } catch (error) {
+    console.error("Error in getAllAdmins function", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
