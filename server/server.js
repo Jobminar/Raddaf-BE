@@ -23,6 +23,7 @@ import BookingRoutes from "./routes/bookingRoutes.js";
 import billRoutes from "./routes/billRoutes.js";
 import inspectionRoutes from "./routes/inspectionReportRoutes.js";
 import initializeSocket from "./modules/socketModule.js";
+import chatRoutes from "./routes/chatRoutes.js";
 import http from "http";
 // Load environment variables early
 dotenv.config();
@@ -107,6 +108,7 @@ app.use("/", chatbotRoutes);
 app.use("/", BookingRoutes);
 app.use("/", billRoutes);
 app.use("/", inspectionRoutes);
+app.use("/", chatRoutes);
 // Connect to MongoDB efficiently changed url to string
 async function connectToMongo() {
   try {

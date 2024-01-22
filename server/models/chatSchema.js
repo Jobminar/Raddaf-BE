@@ -1,7 +1,12 @@
+// chatSchema.js
 import { Schema, model } from "mongoose";
 
 const chatSchema = new Schema({
   sender: {
+    type: String,
+    required: true,
+  },
+  receiver: {
     type: String,
     required: true,
   },

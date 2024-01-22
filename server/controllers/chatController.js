@@ -1,10 +1,11 @@
 // chatController.js
 import Chat from "../models/chatSchema.js";
 
-export const saveMessage = async (sender, message) => {
+export const saveMessage = async (sender, receiver, message) => {
   try {
     const newChat = new Chat({
       sender,
+      receiver,
       message,
     });
     await newChat.save();
