@@ -1,8 +1,22 @@
 // chatController.js
 import Chat from "../models/chatSchema.js";
+import Admin from "../models/adminModel.js";
+import Agent from "../models/agentModel.js";
 
 export const saveMessage = async (sender, receiver, message) => {
   try {
+    // Check if sender and receiver emails exist in Admin or Agent schemas
+    const senderExists =
+      (await Admin.exists({ email: sender })) ||
+      (await Agent.exists({ email: sender }));
+    const receiverExists =
+      (await Admin.exists({ email: receiver })) ||
+      (await Agent.exists({ email: receiver }));
+
+    if (!senderExists || !receiverExists) {
+      throw new Error("Sender or receiver email does not exist.");
+    }
+
     const newChat = new Chat({
       sender,
       receiver,
@@ -17,7 +31,7 @@ export const saveMessage = async (sender, receiver, message) => {
 
 export const getMessages = async () => {
   try {
-    const messages = await Chat.find().sort({ timestamp: -1 }).limit(10);
+    const messages = await Chat.find().sort({ createdAt: -1 }).limit(10);
     return messages.reverse();
   } catch (error) {
     throw error;
