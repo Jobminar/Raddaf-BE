@@ -8,7 +8,7 @@ const router = Router();
 import { saveMessage, getMessages } from "../controllers/chatController.js";
 
 // Define a route for fetching messages
-router.get("/messages", async (req, res) => {
+router.get("/messages", async (_req, res) => {
   try {
     // Call 'getMessages' from 'chatController' and send the messages as JSON
     const messages = await getMessages();
@@ -24,10 +24,10 @@ router.get("/messages", async (req, res) => {
 router.post("/messages", async (req, res) => {
   try {
     // Extract message details from the request body
-    const { sender, message } = req.body;
+    const { sender, message, receiver } = req.body;
 
     // Call 'saveMessage' from 'chatController' to save the message
-    const savedMessage = await saveMessage(sender, message);
+    const savedMessage = await saveMessage(sender, message, receiver);
 
     // Send the saved message as JSON
     res.json(savedMessage);
