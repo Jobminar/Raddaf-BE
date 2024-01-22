@@ -1,4 +1,5 @@
-import { NlpManager } from "node-nlp";
+import pkg from "node-nlp";
+const { NlpManager } = pkg;
 import ChattingHistory from "../models/chattingHistory.js";
 
 const GENERIC_GREETING =

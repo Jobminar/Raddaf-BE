@@ -19,7 +19,11 @@ import callBackAgentRoutes from "./routes/callBackAgentRoutes.js";
 import nlp from "node-nlp";
 import chatbotRoutes from "./routes/chatBotRoutes.js";
 import appointmentRoutes from "./routes/Appointment.js";
-
+import BookingRoutes from "./routes/bookingRoutes.js";
+import billRoutes from "./routes/billRoutes.js";
+import inspectionRoutes from "./routes/inspectionReportRoutes.js";
+import initializeSocket from "./modules/socketModule.js";
+import http from "http";
 // Load environment variables early
 dotenv.config();
 
@@ -33,7 +37,8 @@ if (!process.env.MONGODB_URL) {
 
 // Create the Express app
 const app = express();
-
+const server = http.createServer(app);
+const io = initializeSocket(server);
 // Set view engine, middleware, and routes
 app.set("view engine", "ejs");
 app.use(json());
@@ -99,6 +104,9 @@ app.use("/agent-auth", agentAuthRoutes);
 app.use("/listing-property", listingPropertyRoutes);
 app.use("/", callBackAgentRoutes);
 app.use("/", chatbotRoutes);
+app.use("/", BookingRoutes);
+app.use("/", billRoutes);
+app.use("/", inspectionRoutes);
 // Connect to MongoDB efficiently changed url to string
 async function connectToMongo() {
   try {
