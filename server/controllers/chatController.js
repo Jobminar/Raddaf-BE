@@ -1,7 +1,7 @@
 // chatController.js
 import Chat from "../models/chatSchema.js";
-import Admin from "../models/adminModel.js";
-import Agent from "../models/agentModel.js";
+import Admin from "../models/Admin.js";
+import Agent from "../models/Agent.js";
 
 export const saveMessage = async (sender, receiver, message) => {
   try {
