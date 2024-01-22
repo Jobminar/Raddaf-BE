@@ -7,11 +7,6 @@ const bookingController = {
     try {
       const { email, zoneNumber, agentEmail, propertyId, dateTime } = req.body;
 
-      const agent = await Agent.findOne({ email: agentEmail });
-      if (!agent) {
-        return res.status(404).json({ error: "Agent not found" });
-      }
-
       const user = await User.findOne({ email });
       if (!user) {
         return res.status(404).json({ error: "User not found" });

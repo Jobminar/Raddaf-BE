@@ -21,13 +21,13 @@ router.get("/messages", async (_req, res) => {
 });
 
 // Define a route for saving a new message
-router.post("/messages", async (req, res) => {
+router.post("/messages", (req, res) => {
   try {
     // Extract message details from the request body
     const { sender, message, receiver } = req.body;
 
     // Call 'saveMessage' from 'chatController' to save the message
-    const savedMessage = await saveMessage(sender, message, receiver);
+    const savedMessage = saveMessage(sender, message, receiver);
 
     // Send the saved message as JSON
     res.json(savedMessage);
