@@ -225,5 +225,18 @@ export const logout = (req, res) => {
     res.status(200).json({ message: "Logout successful." });
   });
 };
+
+export const getAllUsers = async (req, res) => {
+  try {
+    // Fetch all users from the database
+    const users = await User.find({}, { password: 0 }); // Exclude password field from the result
+
+    // Return the list of users
+    res.status(200).json({ users });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 //user profile update
 // authController.js

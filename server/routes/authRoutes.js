@@ -15,4 +15,6 @@ router.get("/check-session", verifyToken, checkSession);
 
 router.put("/update-profile", authController.updateProfile);
 
+router.get("/users", authController.getAllUsers);
+
 export default router;
